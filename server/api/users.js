@@ -9,17 +9,16 @@ export default function ( server, mongoose ) {
   } );
 
 
-  /* 
-    Skapar en Mongoose-modell baserat på usersSchema.
-    Detta möjliggör för oss att skapa, läsa, uppdatera och radera (CRUD) dokument i vår "users"-samling (collection).
-  */
+   
+   /* Skapar en Mongoose-modell baserat på usersSchema.
+    Detta möjliggör för oss att skapa, läsa, uppdatera och radera (CRUD) dokument i vår "users"-samling (collection).*/
+  
   const User = mongoose.model( "users", userSchema );
 
   // GET-route för att hämta alla användare
   server.get( "/api/users", async ( req, res ) => {
     try {
-      const users = await User.find()
-        // .populate( 'authors' );
+      const users = await User.find();
       res.status( 200 ).json( users );
     } catch ( error ) {
       console.error( error ); // Skriver ut felet till konsolen
@@ -42,6 +41,107 @@ export default function ( server, mongoose ) {
   } );
 
 
+  // GET-route för sökning av en användare efter användarnamn
+  server.get( '/api/users/username/:username', async ( req, res ) => {
+    try {
+      const username = req.params.username;
+      const user = await User.findOne( { username: username } );
+      if ( !user ) {
+        return res.status( 404 ).json( { message: "Användare hittades inte" } );
+      }
+      res.json( user );
+    } catch ( error ) {
+      res.status( 500 ).json( { message: "Ett fel uppstod på servern vid hämtning av en användare.", error } );
+    }
+  } );
+
+
+  // GET-route för sökning av användare efter en del av användarnamn  (titel)
+  server.get( "/api/users/searchByUsername/:username", async ( req, res ) => {
+    try {
+      const username = req.params.username;
+      // Användук ett uttryck för att söka efter användare utifrån en del av deras namn
+      const users = await User.find( { username: { $regex: username, $options: "i" } } );
+      res.status( 200 ).json( users );
+    } catch ( error ) {
+      console.error( error );
+      res.status( 500 ).json( { message: "Ett fel inträffade vid sökning efter användare", error } );
+    }
+  } );
+
+  // GET-route för sökning av en användare efter email
+  server.get( "/api/users/email/:email", async ( req, res ) => {
+    try {
+      const email = req.params.email;
+      // Användук ett uttryck för att söka efter användare utifrån en del av deras namn
+      const users = await User.find( { email: email } );
+      res.status( 200 ).json( users );
+    } catch ( error ) {
+      console.error( error );
+      res.status( 500 ).json( { message: "Ett fel inträffade vid sökning efter användare", error } );
+    }
+  } );
+
+  // GET-route för sökning av en användare efter användarnamn
+  server.get( '/api/users/password/:password', async ( req, res ) => {
+    try {
+      const password = req.params.password;
+      const user = await User.findOne( { password: password } );
+      if ( !user ) {
+        return res.status( 404 ).json( { message: "Användare hittades inte" } );
+      }
+      res.json( user );
+    } catch ( error ) {
+      res.status( 500 ).json( { message: "Ett fel uppstod på servern vid hämtning av en användare.", error } );
+    }
+  } );
+  
+  // GET-route för sökning av användare efter datumet av konto skapandet
+  server.get( '/api/users/createdAt/:date', async ( req, res ) => {
+    try {
+      const date = req.params.date;
+      // Проверяем, что в запросе указана дата в правильном формате
+      if ( !isValidDate( date ) ) {
+        return res.status( 400 ).json( { message: "Неверный формат даты. Используйте формат ГГГГ-ММ-ДД." } );
+      }
+      // Ищем активности, у которых дата создания соответствует указанной дате
+      const users = await User.find( { createdAt: { $gte: new Date( date ), $lt: new Date( date + 'T23:59:59.999Z' ) } } );
+
+      res.status( 200 ).json( users );
+    } catch ( error ) {
+      res.status( 500 ).json( { message: "Произошла ошибка при получении активностей." } );
+    }
+  } );
+
+  // Функция для проверки корректности формата даты
+  function isValidDate ( dateString ) {
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    return regex.test( dateString );
+  }
+
+  // GET-route för sökning av användare som har skapat ett konto under ett visst tidsperiod
+  server.get( '/api/users/createdAt/:startDate/:endDate', async ( req, res ) => {
+    try {
+      // Преобразуем параметры startDate и endDate в объекты Date
+      const startDate = new Date( req.params.startDate );
+      const endDate = new Date( req.params.endDate );
+
+      // Проверяем, что даты являются корректными
+      if ( isNaN( startDate.getTime() ) || isNaN( endDate.getTime() ) ) {
+        return res.status( 400 ).json( { message: "Fel datumformat. Använd format 'YYYY-MM-DD'." } );
+      }
+
+      // Ищем пользователей, созданных в заданном временном интервале
+      const users = await User.find( { createdAt: { $gte: startDate, $lte: endDate } } );
+
+      res.status( 200 ).json( users );
+    } catch ( error ) {
+      res.status( 500 ).json( { message: "Произошла ошибка на сервере при получении пользователей по дате создания.", error } );
+    }
+  } );
+
+
+ 
   // Skapar en POST-route för att lägga till en ny användare
   server.post( '/api/users', async ( req, res ) => {
     try {

@@ -9,11 +9,18 @@ const server = express()
 // Bestämmer vilken port som servern ska lyssna på.
 const port = 3000
 
+
 /*
   Servern använder en middleware ( express.json() ) för att omvandla våra request till JSON.
   Detta gör att vi kan hantera JSON-data som skickas i request body.
 */
 server.use( express.json() )
+
+// Middleware för att ställa in rubriken Content-Type
+server.use( ( req, res, next ) => {
+  res.setHeader( 'Content-Type', 'application/json; charset=utf-8' );
+  next();
+} );
 
 /* 
   Vår MongoDB Atlas connection-string

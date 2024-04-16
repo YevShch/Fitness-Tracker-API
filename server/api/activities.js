@@ -1,3 +1,5 @@
+import User from "./users.js"
+
 export default function ( server, mongoose ) {
 
   // Skapar ett schema för "users", vilket definierar strukturen för varje "user"-dokument i databasen.
@@ -19,7 +21,8 @@ export default function ( server, mongoose ) {
   // GET-route för att hämta alla aktiviteter
   server.get( "/api/activities", async ( req, res ) => {
     try {
-      const activities = await Activity.find().populate( 'users' );
+      const activities = await Activity.find()
+        // .populate( 'users' );
       res.status( 200 ).json( activities );
     } catch ( error ) {
       console.error( error ); // Выводим ошибку в консоль
@@ -28,16 +31,49 @@ export default function ( server, mongoose ) {
   } );
 
 
-  // Skapar en GET-route för att hämta en specifik bok med ett specifikt ID
+  // Skapar en GET-route för att hämta en specifik aktivitet med ett specifikt ID
   server.get( '/api/activities/:id', async ( req, res ) => {
     try {
-      const activity = await Activity.findById( req.params.id ); // Hämtar boken med ID från databasen.
+      const activity = await Activity.findById( req.params.id ); // Hämtar aktiviteten med ID från databasen.
       if ( !book ) {
         return res.status( 404 ).json( { message: "Aktivitet hittades inte" } );
       }
       res.json( activity );
     } catch ( error ) {
-      res.status( 500 ).json( { message: "Ett fel uppstod på servern vid hämtning av en bok." } );
+      res.status( 500 ).json( { message: "Ett fel uppstod på servern vid hämtning av en aktivitet." } );
+    }
+  } );
+
+
+  // Skapar en GET-route för att hämta aktiviteter efter användarens ID
+  server.get( "/api/activities/user/:userId", async ( req, res ) => {
+    try {
+      const userId = req.params.userId;
+      const activities = await Activity.find( { userId: userId } );
+      res.status( 200 ).json( activities );
+    } catch ( error ) {
+      console.error( error ); 
+      res.status( 500 ).json( { message: "Ett fel uppstod på servern vid hämtning av en aktivitet.", error } );
+    }
+  } );
+
+  // Skapar en GET-route för att hämta aktiviteter efter användarens namn
+  server.get( "/api/activities/userByUsername/:username", async ( req, res ) => {
+    try {
+      const username = req.params.username;
+      // Находим пользователя по его имени
+      const users = await User.find( { username: { $regex: username, $options: "i" } } )
+
+      if ( !users) {
+        return res.status( 404 ).json( { message: "Användare hittades inte" } );
+      }
+
+      // Затем находим активности для найденного пользователя
+      const activities = await Activity.find( { userId: user._id } );
+      res.status( 200 ).json( activities );
+    } catch ( error ) {
+      console.error( error );
+      res.status( 500 ).json( { message: "Произошла ошибка при получении активностей пользователя.", error } );
     }
   } );
 
@@ -119,7 +155,7 @@ export default function ( server, mongoose ) {
     try {
       const newActivity = new Activity( {
         userId: req.body.userId,
-        type: req.body.year,
+        type: req.body.type,
         startTime: req.body.startTime,
         duration: req.body.duration,
         caloriesBurned: req.body.caloriesBurned,
