@@ -1,4 +1,4 @@
-import User from "./users.js"
+import {User} from './users.js'
 
 export default function ( server, mongoose ) {
 
@@ -18,6 +18,7 @@ export default function ( server, mongoose ) {
   */
   const Activity = mongoose.model( "activities", activitySchema );
 
+
   // GET-route för att hämta alla aktiviteter
   server.get( "/api/activities", async ( req, res ) => {
     try {
@@ -25,13 +26,13 @@ export default function ( server, mongoose ) {
         // .populate( 'users' );
       res.status( 200 ).json( activities );
     } catch ( error ) {
-      console.error( error ); // Выводим ошибку в консоль
+      console.error( error ); 
       res.status( 500 ).json( { message: "Ett fel inträffade", error } );
     }
   } );
 
 
-  // Skapar en GET-route för att hämta en specifik aktivitet med ett specifikt ID
+  // Skapar en GET-route för att hämta en specifik aktivitet med ID
   server.get( '/api/activities/:id', async ( req, res ) => {
     try {
       const activity = await Activity.findById( req.params.id ); // Hämtar aktiviteten med ID från databasen.
@@ -57,41 +58,144 @@ export default function ( server, mongoose ) {
     }
   } );
 
+
   // Skapar en GET-route för att hämta aktiviteter efter användarens namn
   server.get( "/api/activities/userByUsername/:username", async ( req, res ) => {
     try {
       const username = req.params.username;
-      // Находим пользователя по его имени
-      const users = await User.find( { username: { $regex: username, $options: "i" } } )
+      // Hämtar användren efter namn
+      const user = await User.findOne( { username: { $regex: username, $options: "i" } } );
 
-      if ( !users) {
+      if ( !user ) {
         return res.status( 404 ).json( { message: "Användare hittades inte" } );
       }
-
-      // Затем находим активности для найденного пользователя
+      // Hämtar alla aktiviteter vars användar-ID matchar användar-ID
       const activities = await Activity.find( { userId: user._id } );
       res.status( 200 ).json( activities );
     } catch ( error ) {
       console.error( error );
-      res.status( 500 ).json( { message: "Произошла ошибка при получении активностей пользователя.", error } );
+      res.status( 500 ).json( { message: "Ett fel uppstod på servern vid hämtning av användarens aktiviteter.", error } );
     }
   } );
 
-  // Skapar en GET-route för att hämta en bok med en specifik IBAN.
+
+  // Skapar en GET-route för att hämta en aktiviteter efter type
   server.get( '/api/activities/type/:type', async ( req, res ) => {
     try {
-      const activity = await Activity.findOne( { type: req.params.type } );
-      if ( !activity ) {
-        return res.status( 404 ).json( { message: "Aktivitet hittades inte" } );
+      const activities = await Activity.find( { type: req.params.type } )
+        .populate( 'userId' );
+      if ( !activities || activities.length === 0 ) {
+        return res.status( 404 ).json( { message: "Aktiviteter hittades inte" } );
       }
-      res.json( activity );
+      res.json( activities );
     } catch ( error ) {
-      res.status( 500 ).json( { message: "Ett fel uppstod på servern vid sökning efter en aktivitet med type." } );
+      res.status( 500 ).json( { message: "Ett fel uppstod vid sökning efter aktivitet efter typ.", error } );
     }
   } );
 
 
-  // Skapar en GET-route för att hämta kategorier av aktiviteter baserat på år.
+  server.get( '/api/activities/type/:type/:duration', async ( req, res ) => {
+    try {
+      const { type, duration } = req.params;
+
+      // Konvertera varaktigheten till en siffra
+      const durationValue = parseInt( duration );
+
+      // Kontrollera att varaktigheten är ett giltigt nummer
+      if ( isNaN( durationValue ) ) {
+        return res.status( 400 ).json( { message: "Ogiltig varaktighet. Varaktighet måste vara ett nummer." } );
+      }
+
+      const activities = await Activity.find( { type: type, duration: durationValue } )
+        .populate( 'userId' );
+
+      if ( !activities || activities.length === 0 ) {
+        return res.status( 404 ).json( { message: "Aktiviteter hittades inte" } );
+      }
+
+      res.json( activities );
+    } catch ( error ) {
+      res.status( 500 ).json( { message: "Ett fel uppstod vid sökning efter aktivitet efter typ och varaktighet.", error } );
+    }
+  } );
+
+
+  // GET-route för sökning av aktiviteter efter datumet de startades
+  server.get( '/api/activities/startTime/:date', async ( req, res ) => {
+    try {
+      const date = req.params.date;
+      // Kontrollerar att datumet i förfrågan är i rätt format
+      if ( !isValidDate( date ) ) {
+        return res.status( 400 ).json( { message: "Ogiltigt datumformat. Använd formatet YYYY-MM-DD." } );
+      }
+      // Skapar ett Date-objekt från en datumsträng
+      const searchDate = new Date( date );
+      // Söker efter aktiviteter som startade ett angivet datum
+      const activities = await Activity.find( { startTime: { $gte: searchDate, $lt: new Date( searchDate.getTime() + 24 * 60 * 60 * 1000 ) } } );
+
+      res.status( 200 ).json( activities );
+    } catch ( error ) {
+      res.status( 500 ).json( { message: "Ett fel uppstod vid sökning efter aktiviteter.", error } );
+    }
+  } );
+  // Funktion för att kontrollera att datumformatet är korrekt
+  function isValidDate ( dateString ) {
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    return regex.test( dateString );
+  }
+
+
+  // GET-route för sökning av aktiviteter som har blivit utförda under ett visst tidsperiod
+  server.get( '/api/activities/startTime/:startDate/:endDate', async ( req, res ) => {
+    try {
+      // Konvertera parametrarna startDate och endDate till Date-objekt
+      const startDate = new Date( req.params.startDate );
+      const endDate = new Date( req.params.endDate );
+
+      // Kontrollerar att datumen är korrekta
+      if ( isNaN( startDate.getTime() ) || isNaN( endDate.getTime() ) ) {
+        return res.status( 400 ).json( { message: "Fel datumformat. Använd format 'YYYY-MM-DD'." } );
+      }
+
+      // Hämtar aktiviteter skapade inom ett givet tidsintervall
+      const users = await Activity.find( { startTime: { $gte: startDate, $lte: endDate } } )
+        .populate( userId );
+
+      res.status( 200 ).json( users );
+    } catch ( error ) {
+      res.status( 500 ).json( { message: "Ett fel uppstod på servern vid hämtning av aktiviteter efter tidsperiod.", error } );
+    }
+  } );
+
+
+  // Get-route för att söka efter aktiviteter för en användare baserat på förbrända kalorier
+  server.get( '/api/activities/user/:userId/:minCalories/:maxCalories', async ( req, res ) => {
+    try {
+      // Extraherar parametrar från förfrågan
+      const { userId, minCalories, maxCalories } = req.params;
+
+      // Söker efter aktiviteter för den angivna användaren med förbrända kalorier inom det angivna intervallet
+      const activities = await Activity.find( {
+        userId: userId,
+        caloriesBurned: { $gte: minCalories, $lte: maxCalories }
+      } )
+      // .populate( 'userId' );  // Fyller i användardata för varje hittad aktivitet
+
+      // Kontrollerar om aktiviteter har hittats
+      if ( activities.length === 0 ) {
+        return res.status( 404 ).json( { message: "Aktiviteter hittades inte" } );
+      }
+      // Skickar de hittade aktiviteterna som svar
+      res.status( 200 ).json( activities );
+    } catch ( error ) {
+      // Om ett fel inträffar, skicka felmeddelande
+      console.error( "Fel vid sökning efter aktiviteter:", error );
+      res.status( 500 ).json( { message: "Serverfel vid sökning efter aktiviteter" } );
+    }
+  } );
+
+
+  // Skapar en GET-route för att hämta kategorier av aktiviteter baserat på datum av skapandet.
   server.get( '/api/activities/createdAt/:startDate/:endDate', async ( req, res ) => {
     try {
       const startDate = parseInt( req.params.startTime );
@@ -101,53 +205,13 @@ export default function ( server, mongoose ) {
         return res.status( 400 ).json( { message: "Ogiltiga årtal. Ange giltiga siffror." } );
       }
 
-      const activity = await Activity.find( { startTime: { $gte: startDate, $lte: endDate } } )
+      const activity = await Activity.find( { createdAt: { $gte: startDate, $lte: endDate } } )
         // .populate( '' );
       res.status( 200 ).json( activity );
     } catch ( error ) {
       res.status( 500 ).json( { message: "Ett fel uppstod på servern vid hämtning av aktiviteter efter datum av skapandet." } );
     }
   } );
-
-  // // GET-route för att hämta böcker efter författarens efternamn
-  // server.get( '/api/books/lastname/:lastname', async ( req, res ) => {
-  //   try {
-  //     const lastname = req.params.lastname;
-  //     const booksByAuthorLastname = await Book.find( { 'authors.lastname': lastname } ).populate( 'authors' );
-  //     res.status( 200 ).json( booksByAuthorLastname );
-  //   } catch ( error ) {
-  //     console.error( error );
-  //     res.status( 500 ).json( { message: 'Ett fel inträffade', error } );
-  //   }
-  // } ); 
-
-  // server.get( '/api/activities/ duration/: duration', async ( req, res ) => {
-  //   try {
-  //     const duration = req.params.duration;
-  //     console.log( `Received request for books by activities with duration: ${ duration }` );
-  //     const booksByAuthorLastname = await Book.find( { 'authors.lastname': { $regex: lastname, $options: "i" } } ).populate( 'authors' );
-  //     console.log( `Found ${ booksByAuthorLastname.length } books for author with lastname ${ lastname }` );
-  //     res.status( 200 ).json( booksByAuthorLastname );
-  //   } catch ( error ) {
-  //     console.error( error );
-  //     res.status( 500 ).json( { message: 'Ett fel inträffade', error } );
-  //   }
-  // } );
-
-
-  // // GET-route для поиска книги по слову или части названия (titel)
-  // server.get( "/api/books/searchByTitle/:titel", async ( req, res ) => {
-  //   try {
-  //     const title = req.params.titel;
-  //     // Используйте регулярное выражение для поиска книг по части названия
-  //     const books = await Book.find( { titel: { $regex: title, $options: "i" } } );
-  //     res.status( 200 ).json( books );
-  //   } catch ( error ) {
-  //     console.error( error );
-  //     res.status( 500 ).json( { message: "Ett fel inträffade vid sökning efter böcker", error } );
-  //   }
-  // } );
-
 
 
   // Skapar en POST-route för att lägga till en ny aktivitet
