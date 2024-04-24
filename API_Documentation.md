@@ -1,5 +1,5 @@
-# Fitness Tracker API Documentation
-
+# Fitness Tracker API Documentation 
+:muscle::running::weight_lifter: :biking_man: :dancer:  
 ## Description
 The Fitness Tracker API allows users to track their activities, step counts, and set goals to achieve fitness targets. It provides endpoints to manage user accounts, record activities, monitor step counts, and set goals. With this API, developers can build applications to help users stay fit and achieve their fitness goals.
 
@@ -12,7 +12,7 @@ Authentication can be achieved using access tokens or other authentication mecha
 
 ## Models
 
-### Activity
+### Activity :dancer: 
 Represents an activity tracked by the Fitness Tracker.
 
 - `userId` (Object ID): The ID of the user who performed the activity. Required.
@@ -22,7 +22,7 @@ Represents an activity tracked by the Fitness Tracker.
 - `caloriesBurned` (Number): The number of calories burned during the activity. Required.
 - `createdAt` (Date): The date and time when the activity was created. Defaults to the current date and time.
 
-### User
+### User :bust_in_silhouette:
 Represents a user of the Fitness Tracker.
 
 - `username` (String): The username of the user. Required.
@@ -30,14 +30,14 @@ Represents a user of the Fitness Tracker.
 - `password` (String): The hashed password of the user. Required.
 - `createdAt` (Date): The date and time when the user was created. Defaults to the current date and time.
 
-### StepCount
+### StepCount :footprints:
 Represents the step count data tracked by the Fitness Tracker.
 
 - `userId` (Object ID): The ID of the user for whom the step count is recorded. Required.
 - `date` (Date): The date for which the step count is recorded. Required.
 - `count` (Number): The number of steps recorded for the specified date. Required.
 
-### Goal
+### Goal :dart:
 Represents a goal set by a user in the Fitness Tracker.
 
 - `userId` (Object ID): The ID of the user who set the goal. Required.
