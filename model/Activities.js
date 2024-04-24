@@ -10,10 +10,6 @@ const activitySchema = new mongoose.Schema( {
   createdAt: { type: Date, default: Date.now }
 } );
 
-/* 
-  Skapar en Mongoose-modell baserat på usersSchema.
-  Detta möjliggör för oss att skapa, läsa, uppdatera och radera (CRUD) dokument i vår "users"-samling (collection).
-*/
 const Activity = mongoose.model( "activities", activitySchema );
 
 export default Activity

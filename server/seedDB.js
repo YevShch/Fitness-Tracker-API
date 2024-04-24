@@ -1,7 +1,7 @@
 // Importing necessary modules
 import { faker } from '@faker-js/faker';
 import mongoose from 'mongoose';
-import User from './users.js';
+import User from '../model/Users.js';
 import Activity from '../model/Activities.js';
 import Goal from '../model/Goals.js';
 import StepCount from '../model/StepCounts.js';

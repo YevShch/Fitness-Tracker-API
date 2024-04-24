@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-// Skapar ett schema för "users", vilket definierar strukturen för varje "user"-dokument i databasen.
+
+// Skapar ett schema för "goals", vilket definierar strukturen för varje "goal"-dokument i databasen.
 const goalSchema = new mongoose.Schema( {
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   type: { type: String, required: true },
@@ -8,11 +9,6 @@ const goalSchema = new mongoose.Schema( {
   createdAt: { type: Date, default: Date.now }
 } );
 
-
-/* 
-  Skapar en Mongoose-modell baserat på usersSchema.
-  Detta tillåter oss att skapa, läsa, uppdatera, och ta bort (CRUD) dokument i vår "users"-collection.
-*/
 const Goal = mongoose.model( 'goals', goalSchema );
 
 export default Goal

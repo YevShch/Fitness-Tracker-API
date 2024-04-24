@@ -1,19 +1,32 @@
-// import mongoose from "mongoose";
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 
-// // Skapar ett schema för "users", vilket definierar strukturen för varje "user"-dokument i databasen.
-// const userSchema = new mongoose.Schema( {
-//   username: { type: String, required: true },
-//   email: { type: String, required: true },
-//   password: { type: String, required: true },
-//   createdAt: { type: Date, default: Date.now }
-// } );
+const userSchema = new mongoose.Schema( {
+  username: { type: String, required: true },
+  email: { type: String, required: true },
+  password: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now }
+} );
 
-// /* 
-//   Skapar en Mongoose-modell baserat på usersSchema.
-//   Detta möjliggör för oss att skapa, läsa, uppdatera och radera (CRUD) dokument i vår "users"-samling (collection).
-// */
-// const User = mongoose.model( "users", userSchema );
+userSchema.pre( 'save', async function ( next ) {
+  try {
+    const user = this;
+    if ( !user.isModified( 'password' ) ) return next();
+    const hashedPassword = await bcrypt.hash( user.password, 10 );
+    user.password = hashedPassword;
+    next();
+  } catch ( error ) {
+    next( error );
+  }
+} );
 
+userSchema.path( 'email' ).validate( async function ( value ) {
+  const userCount = await this.model( 'User' ).countDocuments( { email: value } );
+  return !userCount;
+}, 'Email must be unique' );
 
-// export default User;
+const User = mongoose.model( 'User', userSchema );
+
+export default User;
+
 

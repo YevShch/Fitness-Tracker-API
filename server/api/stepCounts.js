@@ -1,17 +1,6 @@
+import StepCount from "../../model/StepCounts.js";
+
 export default function ( server, mongoose ) {
-
-  // Skapar ett schema för "users", vilket definierar strukturen för varje "user"-dokument i databasen.
-  const stepCountSchema = new mongoose.Schema( {
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    date: { type: Date, required: true },
-    count: { type: Number, required: true }
-  } );
-
-  /* 
-    Skapar en Mongoose-modell baserat på usersSchema.
-    Detta möjliggör för oss att skapa, läsa, uppdatera och radera (CRUD) dokument i vår "users"-samling (collection).
-  */
-  const StepCount = mongoose.model( "stepCounts", stepCountSchema );
 
   // GET-route för att hämta alla stegräkningar
   server.get( "/api/stepCounts", async ( req, res ) => {
@@ -25,17 +14,77 @@ export default function ( server, mongoose ) {
     }
   } );
 
+  // GET-route för att hämta alla stegräkningar för specifik användare
+  server.get( "/api/stepCounts/user/:userId/", async ( req, res ) => {
+    try {
+      const userId = req.params.userId;
+      const stepCounts = await StepCount.find( { userId: userId } )
+      // .populate( 'authors' );
+      res.status( 200 ).json( stepCounts );
+    } catch ( error ) {
+      console.error( error ); // Skriver ut felet till konsolen
+      res.status( 500 ).json( { message: "Ett fel inträffade", error } );
+    }
+  } );
 
   // Skapar en GET-route för att hämta en specifik stegräkning med ett specifikt ID
   server.get( '/api/stepCounts/:id', async ( req, res ) => {
     try {
       const stepCounts = await StepCount.findById( req.params.id ); // Hämtar Antal steg med ID från databasen.
-      if ( !goal ) {
+      if ( !stepCounts ) {
         return res.status( 404 ).json( { message: "Antal steg hittades inte" } );
       }
       res.json( stepCounts );
     } catch ( error ) {
       res.status( 500 ).json( { message: "Ett fel uppstod på servern vid hämtning av antal steg." } );
+    }
+  } );
+
+
+  // GET-rout för att hämta stegräkningar för angiven tidsperiod 
+  server.get( "/api/stepCounts/:startDate/:endDate", async ( req, res ) => {
+    try {
+      const startDate = new Date( req.params.startDate );
+      const endDate = new Date( req.params.endDate );
+
+      // kollar om datum är korekta
+      if ( isNaN( startDate.getTime() ) || isNaN( endDate.getTime() ) ) {
+        return res.status( 400 ).json( { message: "Ogiltig format. Använd formatet YYYY-MM-DD." } );
+      }
+
+      const stepCounts = await StepCount.find( { date: { $gte: startDate, $lte: endDate } } );
+      if ( stepCounts.length === 0 ) {
+        return res.status( 404 ).json( { message: `Steg-räkningar hittades inte under den angivna tidsperioden` } );
+      }
+      res.status( 200 ).json( stepCounts );
+    } catch ( error ) {
+      console.error( error );
+      res.status( 500 ).json( { message: "Ett felinträffad", error } );
+    }
+  } );
+
+
+ 
+  // GET-rout för att hämta stegräkningar  för en specifik användare för angiven tidsperiod
+  server.get( "/api/stepCounts/:userId/:startDate/:endDate", async ( req, res ) => {
+    try {
+      const userId = req.params.userId;
+      const startDate = new Date( req.params.startDate );
+      const endDate = new Date( req.params.endDate );
+
+      // Проверяем, являются ли даты корректными
+      if ( isNaN( startDate.getTime() ) || isNaN( endDate.getTime() ) ) {
+        return res.status( 400 ).json( { message: "Ogiltig format. Använd formatet YYYY-MM-DD." } );
+      }
+
+      const stepCounts = await StepCount.find( { userId: userId, date: { $gte: startDate, $lte: endDate } } );
+      if ( stepCounts.length === 0 ) {
+        return res.status( 404 ).json( { message: `Steg räkningar hittades inte för användare ${ userId } för angiven tidsperiod` } );
+      }
+      res.status( 200 ).json( stepCounts );
+    } catch ( error ) {
+      console.error( error );
+      res.status( 500 ).json( { message: "Ett fel uppståd", error } );
     }
   } );
 
