@@ -3,6 +3,13 @@
 ## Description
 The Fitness Tracker API allows users to track their activities, step counts, and set goals to achieve fitness targets. It provides endpoints to manage user accounts, record activities, monitor step counts, and set goals. With this API, developers can build applications to help users stay fit and achieve their fitness goals.
 
+# Authentication
+
+While this API currently does not require user authentication for accessing its endpoints, there is potential for authentication to be implemented or further developed in the future to enhance the security of user data.
+
+Authentication can be achieved using access tokens or other authentication mechanisms. This would require clients to include authentication credentials in their requests to access protected endpoints. Typically, these credentials are obtained through a login process, where users provide their username and password to authenticate themselves.
+
+
 ## Models
 
 ### Activity
@@ -68,7 +75,20 @@ Retrieve information about activities.
 
 - `POST /activities` Create a new activity.
 
-- `DELETE /activities/{userId}`  Remove an activity.
+- `DELETE /activities/{userId}`  Remove an activity. 
+
+### Parameters:
+
+- **userId:** The unique identifier of the user.
+- **type:** The type of the activity.
+- **minCalories:** The minimum number of burned calories.
+- **maxCalories:** The maximum number of burned calories.
+- **startDate:** The start date of the activity.
+- **endDate:** The end date of the activity.
+- **startTimeBefore:** The start time before a certain date.
+- **startTimeAfter:** The start time after a certain date.
+- **minMinutes:** The minimum duration of the activity in minutes.
+- **maxMinutes:** The maximum duration of the activity in minutes.
 
 ## /users 
 
@@ -98,6 +118,15 @@ Retrieve information about users.
 
 - `DELETE /users/{userId}`  Remove a user.
 
+### Parameters:
+
+- **userId:** The unique identifier of the user.
+- **email:** The email address of the user.
+- **username:** The username of the user.
+- **part of name:** Part of the username for partial matching.
+- **createdAt:** The date of the account creation.
+
+
 ## /goals 
 
 Retrieve information about goals.
@@ -122,6 +151,13 @@ Retrieve information about goals.
 
 - `DELETE /goals/{_id}`  Remove a goal.
 
+### Parameters:
+
+- **_id:** The unique identifier of the goal.
+- **userId:** The unique identifier of the user.
+- **type_name:** The type of the goal.
+- **createdAt:** The date of the goal creation.
+
 ## /stepCounts 
 
 Retrieve information about step counts.
@@ -140,48 +176,19 @@ Retrieve information about step counts.
 
 - `DELETE /stepCounts/{_id}`  Remove a step count.
 
-## /stepCounts 
-
-Retrieve information about step counts.
-
-### Endpoints:
-
-- **GET /stepCounts**  
-  Retrieve all step counts.
-
-- **GET stepCounts/{_id}**  
-  Retrieve a step count by Id.
-
-- **GET /stepCounts/user/{userId}**  
-  Retrieve step counts for a specific user.
-
-- **GET /stepCounts/user/{userId}/date/YYYY-MM-DD/YYYY-MM-DD**  
-  Retrieve step counts for a specific user by date of creation in a certain period of time.
-
-- **PUT /stepCounts/{_id}**  
-  Update a step count.
-
-- **POST /stepCounts**  
-  Create a step count.
-
-- **DELETE /stepCounts/{_id}**  
-  Remove a step count.
-
 ### Parameters:
 
 - **userId:** The unique identifier of the user.
 - **date:** The date of the step count record.
 
-### Examples:
+### Examples for GET, POST, PUT and DELETE requests:
 
-- Retrieve step counts for a specific user in a certain period of time:
-  - `GET {{Host}}/stepCounts/user/661e330cbca6df6cdde0b7df/2024-04-01/2024-04-30`
-
+## GET
+### Request Example
 - Retrieve a specific step count by ID:
-  - `GET {{Host}}/stepCounts/661e330dbca6df6cdde0b801`
-
+  - `GET http://localhost:3000/api/stepCounts/661e330dbca6df6cdde0b801`
 ### Response Example:
-
+**Status Code:** 200 OK
 ```json
 {
     "_id": "661e330dbca6df6cdde0b801",
@@ -189,4 +196,68 @@ Retrieve information about step counts.
     "date": "2024-04-16T03:23:42.984Z",
     "count": 17726,
     "__v": 0
+} 
+
+## PUT
+### Request Example
+- Update the user:
+  - `PUT http://localhost:3000/api/users/661e34c0aa109d60e825717c`
+**Body:**
+```json
+{
+    "username": "Wyman75"
+}  
+### Response Example:
+**Status Code:** 200 OK
+```json
+{
+    "_id": "661e34c0aa109d60e825717c",
+    "username": "Enola84",
+    "email": "Sydni.Kiehn3@hotmail.com",
+    "password": "t1Uf9guVjvOTyVr",
+    "createdAt": "2023-08-30T13:37:28.041Z",
+    "__v": 0
+}
+
+## POST
+### Request Example
+- Create a new activity:
+  - `GET http://localhost:3000/api/activities`
+**Body:**
+```json
+{
+"userId": "661e330bbca6df6cdde0b7dc",
+"type": "Hiking",
+"startTime": "2024-05-16T09:00:45.061Z",
+"duration": 104,
+"caloriesBurned": 574,
+"createdAt": "2024-04-24T03:58:42.652Z"
+}
+
+### Response Example:
+**Status Code:** 201 OK
+```json
+{
+    "userId": "661e330bbca6df6cdde0b7dc",
+    "type": "Hiking",
+    "startTime": "2024-05-16T09:00:45.061Z",
+    "duration": 104,
+    "caloriesBurned": 574,
+    "createdAt": "2024-04-24T03:58:42.652Z",
+    "_id": "66293e4a6b4412fd99994c46",
+    "__v": 0
+}
+
+## DELETE
+### Request Example:
+- Remove the goal:
+  - `DELETE http://localhost:3000/api/goals/661e34c6aa109d60e8257252`
+
+### Response Example:
+**Status Code:** 200 OK
+```json
+{
+  {
+    "message": "Målet har raderats!"
+}
 }
