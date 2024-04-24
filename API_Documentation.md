@@ -114,10 +114,28 @@ Retrieve information about goals.
 
 - `GET /goals/user/{userId}/{type_name}` Retrieve goals for specific user by type.
 
-- `GET /goals/user/{userId}/createdAt/YYYY-MM-DD/YYYY-MM-DD` Retrieve goals for specific user by date creation in certain period of time.
+- `GET /goals/user/{userId}/createdAt/YYYY-MM-DD/YYYY-MM-DD` Retrieve goals for specific user by date of creation in certain period of time.
 
-- `PUT /goals/{goals}` Update a goal.
+- `PUT /goals/{_id}` Update a goal.
 
 - `POST /goals` Create a new goal.
 
-- `DELETE /goals/{goals}`  Remove a goal.
+- `DELETE /goals/{_id}`  Remove a goal.
+
+## /stepCounts 
+
+Retrieve information about step counts.
+
+-  `GET /stepCounts` Retrieve all step counts.
+
+- `GET stepCounts/{_id}`  Retrieve a step count by Id.
+
+- `GET /stepCounts/user/{userId}` Retrieve step counts for a spesific user.
+
+- `GET /stepCounts/user/{userId}/date/YYYY-MM-DD/YYYY-MM-DD` Retrieve step counts for specific user by date of creation in certain period of time.
+
+- `PUT /stepCounts/{_id}` Update a step count.
+
+- `POST /stepCounts` Create a step count.
+
+- `DELETE /stepCounts/{_id}`  Remove a step count.
