@@ -139,3 +139,54 @@ Retrieve information about step counts.
 - `POST /stepCounts` Create a step count.
 
 - `DELETE /stepCounts/{_id}`  Remove a step count.
+
+## /stepCounts 
+
+Retrieve information about step counts.
+
+### Endpoints:
+
+- **GET /stepCounts**  
+  Retrieve all step counts.
+
+- **GET stepCounts/{_id}**  
+  Retrieve a step count by Id.
+
+- **GET /stepCounts/user/{userId}**  
+  Retrieve step counts for a specific user.
+
+- **GET /stepCounts/user/{userId}/date/YYYY-MM-DD/YYYY-MM-DD**  
+  Retrieve step counts for a specific user by date of creation in a certain period of time.
+
+- **PUT /stepCounts/{_id}**  
+  Update a step count.
+
+- **POST /stepCounts**  
+  Create a step count.
+
+- **DELETE /stepCounts/{_id}**  
+  Remove a step count.
+
+### Parameters:
+
+- **userId:** The unique identifier of the user.
+- **date:** The date of the step count record.
+
+### Examples:
+
+- Retrieve step counts for a specific user in a certain period of time:
+  - `GET {{Host}}/stepCounts/user/661e330cbca6df6cdde0b7df/2024-04-01/2024-04-30`
+
+- Retrieve a specific step count by ID:
+  - `GET {{Host}}/stepCounts/661e330dbca6df6cdde0b801`
+
+### Response Example:
+
+```json
+{
+    "_id": "661e330dbca6df6cdde0b801",
+    "userId": "661e330cbca6df6cdde0b7df",
+    "date": "2024-04-16T03:23:42.984Z",
+    "count": 17726,
+    "__v": 0
+}
