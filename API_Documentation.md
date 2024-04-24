@@ -159,32 +159,23 @@ Retrieve information about goals.
 - **createdAt:** The date of the goal creation.
 
 ## /stepCounts 
-
 Retrieve information about step counts.
-
 -  `GET /stepCounts` Retrieve all step counts.
-
 - `GET stepCounts/{_id}`  Retrieve a step count by Id.
-
 - `GET /stepCounts/user/{userId}` Retrieve step counts for a spesific user.
-
 - `GET /stepCounts/user/{userId}/date/YYYY-MM-DD/YYYY-MM-DD` Retrieve step counts for specific user by date of creation in certain period of time.
-
 - `PUT /stepCounts/{_id}` Update a step count.
-
 - `POST /stepCounts` Create a step count.
-
 - `DELETE /stepCounts/{_id}`  Remove a step count.
 
 ### Parameters:
-
 - **userId:** The unique identifier of the user.
 - **date:** The date of the step count record.
 
-### Examples for GET, POST, PUT and DELETE requests:
 
-## GET
-### Request Example
+## Examples for GET, POST, PUT and DELETE requests:
+
+### GET Request Example
 - Retrieve a specific step count by ID:
   - `GET http://localhost:3000/api/stepCounts/661e330dbca6df6cdde0b801`
 ### Response Example:
@@ -198,8 +189,8 @@ Retrieve information about step counts.
     "__v": 0
 } 
 ```
-## PUT
-### Request Example
+
+### PUT Request Example
 - Update the user:
   - `PUT http://localhost:3000/api/users/661e34c0aa109d60e825717c`
 
@@ -221,8 +212,8 @@ Retrieve information about step counts.
     "__v": 0
 }
 ```
-## POST
-### Request Example
+
+### POST Request Example
 - Create a new activity:
   - `GET http://localhost:3000/api/activities`
 
@@ -251,8 +242,8 @@ Retrieve information about step counts.
     "__v": 0
 }
 ```
-## DELETE
-### Request Example:
+
+### DELETE Request Example:
 - Remove the goal:
   - `DELETE http://localhost:3000/api/goals/661e34c6aa109d60e8257252`
 
