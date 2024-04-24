@@ -88,7 +88,7 @@ Retrieve information about users.
 - `POST /users` Create a new user.
 - `DELETE /users/{userId}`  Remove a user.
 
-### ""users" parameters:
+### "users" parameters:
 - **userId:** The unique identifier of the user.
 - **email:** The email address of the user.
 - **username:** The username of the user.
@@ -125,7 +125,7 @@ Retrieve information about step counts.
 - `POST /stepCounts` Create a step count.
 - `DELETE /stepCounts/{_id}`  Remove a step count.
 
-### Parameters:
+### "stepCounts" parameters:
 - **userId:** The unique identifier of the user.
 - **date:** The date of the step count record.
 
