@@ -46,41 +46,26 @@ The base URL for the Fitness Tracker API is `http://localhost:3000/api/`.
 
 Retrieve information about activities.
 
-- **GET /activities/all**
-  Retrieve all activities.
+-  `GET /activities/all` Retrieve all activities.
 
-- **GET /activities**
-  Retrieve all activities with pagination, filtering, and sorting.
+- `GET /activities?page={}&limit={}` Retrieve activities with pagination.
 
-- **GET /activities?page=2&limit=10**
-  Retrieve activities with pagination.
+- `GET /activities?page=2&limit=10&sortField=name&sortOrder=asc` Retrieve sorted activities with pagination and ascending order.
 
-- **GET /activities?page=2&limit=10&sortField=name&sortOrder=asc**
-  Retrieve sorted activities with pagination and ascending order.
+- `GET /activities?byType={type}` Retrieve activities by type.
 
-- **GET /activities?byType={type}**
-  Retrieve activities by type.
+- `GET /activities?userId={userId}&byType={type}` Retrieve activities for a specific user by type.
 
-- **GET {{Host}}/activities?userId=661e330bbca6df6cdde0b7dc&byType=dancing**
-  Retrieve activities for a specific user by type.
+- `GET /activities?userId={userId}1&minCalories={Na}&maxCalories={Na}` Retrieve activities for a specific user by burned calories.
 
-- **GET /activities?userId=661e330cbca6df6cdde0b7e1&minCalories=100&maxCalories=500**
-  Retrieve activities for a specific user by burned calories.
+- `GET /activities?userId={userId}&startDate={YYYY-MM-DD}&endDate={YYYY-MM-DD}` Retrieve activities for a specific user by date of creation.
 
-- **GET /activities?userId=661e330cbca6df6cdde0b7df&startDate=2024-01-01&endDate=2024-05-01**
-  Retrieve activities for a specific user by date of creation.
+- `GET /activities?userId={userId}&startTimeBefore={YYYY-MM-DD}&startTimeAfter={YYYY-MM-DD}` Retrieve activities for a user by the date of start.
 
-- **GET /activities?userId=661e330cbca6df6cdde0b7e1&startTimeBefore=2024-04-26&startTimeAfter=2023-01-01**
-  Retrieve activities for a user by the date of start.
+- `GET /activities?userId={userId}&minMinutes={Na}&maxMinutes={Na}` Retrieve activities for a user by duration.
 
-- **GET /activities?userId=661e34c0aa109d60e825718c&minMinutes=20&maxMinutes=101**
-  Retrieve activities for a user by duration.
+- `PUT /api/activities/{userId}` Update an activity.
 
-- **PUT /api/activities/{userId}**
-  Update an activity.
+- `POST /api/activities` Create a new activity.
 
-- **POST /api/activities**
-  Create a new activity.
-
-- **DELETE /api/activities/{userId}**
-  Remove an activity.
+- `DELETE /api/activities/{userId}`  Remove an activity.
