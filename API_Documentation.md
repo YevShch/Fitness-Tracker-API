@@ -10,11 +10,10 @@ While this API currently does not require user authentication for accessing its 
 Authentication can be achieved using access tokens or other authentication mechanisms. This would require clients to include authentication credentials in their requests to access protected endpoints. Typically, these credentials are obtained through a login process, where users provide their username and password to authenticate themselves.
 
 
-## Models
+## Models:
 
 ### Activity :runner: 
 Represents an activity tracked by the Fitness Tracker.
-
 - `userId` (Object ID): The ID of the user who performed the activity. Required.
 - `type` (String): The type of activity. Required.
 - `startTime` (Date): The start time of the activity. Required.
@@ -24,7 +23,6 @@ Represents an activity tracked by the Fitness Tracker.
 
 ### User :bust_in_silhouette:
 Represents a user of the Fitness Tracker.
-
 - `username` (String): The username of the user. Required.
 - `email` (String): The email address of the user. Required.
 - `password` (String): The hashed password of the user. Required.
@@ -32,7 +30,6 @@ Represents a user of the Fitness Tracker.
 
 ### StepCount :footprints:
 Represents the step count data tracked by the Fitness Tracker.
-
 - `userId` (Object ID): The ID of the user for whom the step count is recorded. Required.
 - `date` (Date): The date for which the step count is recorded. Required.
 - `count` (Number): The number of steps recorded for the specified date. Required.
@@ -45,40 +42,26 @@ Represents a goal set by a user in the Fitness Tracker.
 - `target` (String): The target set for the goal. Required.
 - `createdAt` (Date): The date and time when the goal was created. Defaults to the current date and time.
 
-# Endpoint Structure
+## Endpoint Structure
 
 The base URL for the Fitness Tracker API is `http://localhost:3000/api/`.
 
 ## /activities
-
 Retrieve information about activities.
-
 -  `GET /activities/all` Retrieve all activities.
-
 - `GET /activities?page={}&limit={}` Retrieve activities with pagination.
-
 - `GET /activities?page=2&limit=10&sortField=name&sortOrder=asc` Retrieve sorted activities with pagination and ascending order.
-
 - `GET /activities?byType={type}` Retrieve activities by type.
-
 - `GET /activities?userId={userId}&byType={type}` Retrieve activities for a specific user by type.
-
 - `GET /activities?userId={userId}1&minCalories={Na}&maxCalories={Na}` Retrieve activities for a specific user by burned calories.
-
 - `GET /activities?userId={userId}&startDate={YYYY-MM-DD}&endDate={YYYY-MM-DD}` Retrieve activities for a specific user by date of creation.
-
 - `GET /activities?userId={userId}&startTimeBefore={YYYY-MM-DD}&startTimeAfter={YYYY-MM-DD}` Retrieve activities for a user by the date of start.
-
 - `GET /activities?userId={userId}&minMinutes={Na}&maxMinutes={Na}` Retrieve activities for a user by duration.
-
 - `PUT /activities/{userId}` Update an activity.
-
 - `POST /activities` Create a new activity.
-
 - `DELETE /activities/{userId}`  Remove an activity. 
 
-### Parameters:
-
+### "acttivities" parameters:
 - **userId:** The unique identifier of the user.
 - **type:** The type of the activity.
 - **minCalories:** The minimum number of burned calories.
@@ -91,35 +74,21 @@ Retrieve information about activities.
 - **maxMinutes:** The maximum duration of the activity in minutes.
 
 ## /users 
-
 Retrieve information about users.
-
 -  `GET /users/all` Retrieve all users.
-
 - `GET /users?page={}&limit={}` Retrieve users with pagination.
-
 - `GET /users?page={Na}&limit={Na}&sortField={name}&sortOrder=asc` Retrieve sorted users with pagination and ascending order.
-
 - `GET /users/{userId}`  Retrieve a user by Id.
-
 - `GET /users/email/{email}` Retrieve a user by email.
-
 - `GET /users/username/{username}` Retrieve a user by username.
-
 - `GET /users/partOfUsername/{part of name}` Retrieve users by part of username.
-
 - `GET /users/createdAt/YYYY-MM-DD` Retrieve users by date of account creation.
-
 - `GET /users/createdAt/YYYY-MM-DD/YYYY-MM-DD` Retrieve users by date of account creation in certain period of time.
-
 - `PUT /users/{userId}` Update a user.
-
 - `POST /users` Create a new user.
-
 - `DELETE /users/{userId}`  Remove a user.
 
-### Parameters:
-
+### ""users" parameters:
 - **userId:** The unique identifier of the user.
 - **email:** The email address of the user.
 - **username:** The username of the user.
@@ -128,31 +97,19 @@ Retrieve information about users.
 
 
 ## /goals 
-
 Retrieve information about goals.
-
 -  `GET /goals/all` Retrieve all goals.
-
 - `GET goals?page={}&limit={}` Retrieve goals with pagination.
-
 - `GET /goals?page={Na}&limit={Na}&sortField={name}&sortOrder=asc` Retrieve sorted goals with pagination and ascending order.
-
 - `GET goals/{Id}`  Retrieve a goal by Id.
-
 - `GET /goals/user/{userId}` Retrieve goals for a spesific user.
-
 - `GET /goals/user/{userId}/{type_name}` Retrieve goals for specific user by type.
-
 - `GET /goals/user/{userId}/createdAt/YYYY-MM-DD/YYYY-MM-DD` Retrieve goals for specific user by date of creation in certain period of time.
-
 - `PUT /goals/{_id}` Update a goal.
-
 - `POST /goals` Create a new goal.
-
 - `DELETE /goals/{_id}`  Remove a goal.
 
-### Parameters:
-
+### "goals" parameters:
 - **_id:** The unique identifier of the goal.
 - **userId:** The unique identifier of the user.
 - **type_name:** The type of the goal.
@@ -175,8 +132,7 @@ Retrieve information about step counts.
 
 ## Examples for GET, POST, PUT and DELETE requests:
 
-### GET Request Example
-- Retrieve a specific step count by ID:
+### GET Request Example - Retrieve a specific step count by ID.
   - `GET http://localhost:3000/api/stepCounts/661e330dbca6df6cdde0b801`
 ### Response Example:
 **Status Code:** 200 OK
@@ -190,8 +146,7 @@ Retrieve information about step counts.
 } 
 ```
 
-### PUT Request Example
-- Update the user:
+### PUT Request Example - Update the user.
   - `PUT http://localhost:3000/api/users/661e34c0aa109d60e825717c`
 
 **Body:**
@@ -213,8 +168,7 @@ Retrieve information about step counts.
 }
 ```
 
-### POST Request Example
-- Create a new activity:
+### POST Request Example - Create a new activity.
   - `GET http://localhost:3000/api/activities`
 
 **Body:**
@@ -243,8 +197,7 @@ Retrieve information about step counts.
 }
 ```
 
-### DELETE Request Example:
-- Remove the goal:
+### DELETE Request Example - Remove the goal.
   - `DELETE http://localhost:3000/api/goals/661e34c6aa109d60e8257252`
 
 ### Response Example:
@@ -256,3 +209,19 @@ Retrieve information about step counts.
 }
 }
 ```
+## Status Codes  
+The **Fitness Tracker API** returns the following status codes:
+ 1. **200 OK**: This status code indicates that the request was successful. The server has processed the request and returned the expected data. For example, when retrieving user information or exercise logs, a successful response will have a status code of 200. 
+ 2. **201 Created**: This status code is used when a new resource has been successfully created. For example, when adding a new exercise log entry, the server will respond with a 201 status code to indicate that the log has been successfully created.
+ 3. **404 Not Found**: This status code indicates that the requested resource was not found on the server. For example, if a user tries to retrieve an exercise log that does not exist, the server will respond with a 404 status code. 
+ 4. **500 Internal Server Error**: This status code indicates that there was an unexpected error on the server side. It is a generic error response for any unhandled exception. If the server encounters an issue while processing a request, it will respond with a 500 status code.
+  ## Error Handling 
+  In addition to the status codes mentioned above, the **Fitness Tracker API** provides detailed error messages in the response body. When an error occurs, the response will include a JSON object with an "error" field containing relevant information about the error. Clients can use this information to troubleshoot and handle errors appropriately.
+  ### Examples error response: 
+  ```json 
+  { "error": "User not found." }
+   ``` 
+
+```json 
+  { "error": "An error occurred on the server while fetching users" }
+   ``` 
