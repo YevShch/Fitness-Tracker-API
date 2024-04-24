@@ -72,13 +72,13 @@ Retrieve information about activities.
 
 ## /users 
 
-Retrieve information about activities.
+Retrieve information about users.
 
 -  `GET /users/all` Retrieve all users.
 
 - `GET /users?page={}&limit={}` Retrieve users with pagination.
 
-- `GET /users?page=2&limit=10&sortField=name&sortOrder=asc` Retrieve sorted users with pagination and ascending order.
+- `GET /users?page={Na}&limit={Na}&sortField={name}&sortOrder=asc` Retrieve sorted users with pagination and ascending order.
 
 - `GET /users/{userId}`  Retrieve a user by Id.
 
@@ -97,3 +97,27 @@ Retrieve information about activities.
 - `POST /users` Create a new user.
 
 - `DELETE /users/{userId}`  Remove a user.
+
+## /goals 
+
+Retrieve information about goals.
+
+-  `GET /goals/all` Retrieve all goals.
+
+- `GET goals?page={}&limit={}` Retrieve goals with pagination.
+
+- `GET /goals?page={Na}&limit={Na}&sortField={name}&sortOrder=asc` Retrieve sorted goals with pagination and ascending order.
+
+- `GET goals/{Id}`  Retrieve a goal by Id.
+
+- `GET /goals/user/{userId}` Retrieve goals for a spesific user.
+
+- `GET /goals/user/{userId}/{type_name}` Retrieve goals for specific user by type.
+
+- `GET /goals/user/{userId}/createdAt/YYYY-MM-DD/YYYY-MM-DD` Retrieve goals for specific user by date creation in certain period of time.
+
+- `PUT /goals/{goals}` Update a goal.
+
+- `POST /goals` Create a new goal.
+
+- `DELETE /goals/{goals}`  Remove a goal.

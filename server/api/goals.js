@@ -61,91 +61,6 @@ export default function ( server, mongoose ) {
     }
   } );
 
-  // GET-route för att filtrera måll efter typ
-  server.get( "/api/goals/type/:type", async ( req, res ) => {
-    try {
-      const type  = req.params.type;
-      // const goals = await Goal.find( { type: type } );
-      const goals = await Goal.find( { type: { $regex: new RegExp( type, "i" ) } } );
-      // Kontrollerar om goals har hittats
-      if ( goals.length === 0 ) {
-        return res.status( 404 ).json( { message: "Måll hittades inte" } );
-      }
-      res.status( 200 ).json( goals );
-    } catch ( error ) {
-      console.error( error ); // Skriver ut felet till konsolen
-      res.status( 500 ).json( { message: "Ett fel uppstod på servern vid hämtning av måll", error } );
-    }
-  } );  
-
-  // GET-route för att filtrera måll efter skapandet datum 
-  server.get( "/api/goals/createdAt/:createdAt", async ( req, res ) => {
-    try {
-      const createdAt = req.params.createdAt;
-      const goals = await Goal.find( { createdAt: createdAt } );
-      // Kontrollerar om goals har hittats
-      if ( goals.length === 0 ) {
-        return res.status( 404 ).json( { message: "Måll hittades inte" } );
-      }
-      res.status( 200 ).json( goals );
-    } catch ( error ) {
-      console.error( error ); // Skriver ut felet till konsolen
-      res.status( 500 ).json( { message: "Ett fel uppstod på servern vid hämtning av måll", error } );
-    }
-  } );  
-
-  // server.get( '/api/goals/createdAt/:date', async ( req, res ) => {
-  //   try {
-  //     const date = req.params.date;
-  //     // Контроль корректного формата даты
-  //     if ( !isValidDate( date ) ) {
-  //       return res.status( 400 ).json( { message: "Неверный формат даты. Используйте формат YYYY-MM-DD." } );
-  //     }
-  //     // Создание объекта Date из строки даты
-  //     const searchDate = new Date( date );
-  //     // Поиск целей, созданных в указанную дату и сортировка по дате создания
-  //     const goals = await Goal.find( { createdAt: { $gte: searchDate, $lt: new Date( searchDate.getTime() + 24 * 60 * 60 * 1000 ) } } )
-  //       .sort( { createdAt: 'asc' } );
-
-  //     res.status( 200 ).json( goals );
-  //   } catch ( error ) {
-  //     res.status( 500 ).json( { message: "Произошла ошибка при поиске и сортировке целей.", error } );
-  //   }
-  // } );
-
-  // // Функция для проверки корректности формата даты
-  // function isValidDate ( dateString ) {
-  //   const regex = /^\d{4}-\d{2}-\d{2}$/;
-  //   return regex.test( dateString );
-  // }
-
-
-
-  // server.get( '/api/goals/createdAt/:createdAt', async ( req, res ) => {
-  //   try {
-
-  //     const date = req.params.createdAt;
-  //     // Kontrollerar att datumet i förfrågan är i rätt format
-  //     if ( !isValidDate( date ) ) {
-  //       return res.status( 400 ).json( { message: "Ogiltigt datumformat. Använd formatet YYYY-MM-DD." } );
-  //     }
-  //     // Skapar ett Date-objekt från en datumsträng
-  //     const searchDate = new Date( date );
-  //     // Söker efter aktiviteter som startade ett angivet datum
-  //     const goals = await Goal.find( { createdAt: { $gte: searchDate, $lt: new Date( searchDate.getTime() + 24 * 60 * 60 * 1000 ) } } );
-
-  //     res.status( 200 ).json( goals );
-  //   } catch ( error ) {
-  //     res.status( 500 ).json( { message: "Ett fel uppstod vid sökning efter aktiviteter.", error } );
-  //   }
-  // } );
-  // // Funktion för att kontrollera att datumformatet är korrekt
-  // function isValidDate ( dateString ) {
-  //   const regex = /^\d{4}-\d{2}-\d{2}$/;
-  //   return regex.test( dateString );
-  // }
-
-
   // GET-route för att hämta en lista av måll för en specifik användare 
   server.get( "/api/goals/user/:userId", async ( req, res ) => {
     try {
@@ -178,22 +93,38 @@ export default function ( server, mongoose ) {
       console.error( error ); // Skriver ut felet till konsolen
       res.status( 500 ).json( { message: "Ett fel uppstod på servern vid hämtning av måll", error } );
     }
-  } );
+  } ); 
 
-  
-
-  // Skapar en POST-route för att lägga till ett nytt måll
-  server.post( '/api/users/:userId/goals', async ( req, res ) => {
+  // GET route for goals for specific user by date of creation
+  server.get( '/api/goals/user/:userId/createdAt/:startDate/:endDate', async ( req, res ) => {
     try {
+      // Konvertera parametrarna startDate och endDate till Date-objekt
       const userId = req.params.userId;
-      // kollar att anv'ndare med angiven userId existerar
-      const userExists = await User.findOne( { _id: userId } );
-      if ( !userExists ) {
-        return res.status( 404 ).json( { message: "Användare hittades inte." } );
+      const startDate = new Date( req.params.startDate );
+      const endDate = new Date( req.params.endDate );
+
+      // Kontrollerar att datumen är korrekta
+      if ( isNaN( startDate.getTime() ) || isNaN( endDate.getTime() ) ) {
+        return res.status( 400 ).json( { message: "Fel datumformat. Använd format 'YYYY-MM-DD'." } );
       }
 
-      const newGoal = new Goal( {
-        userId: userId,
+      // Hämtar måll skapade inom ett givet tidsintervall
+      const goals = await Goal.find( { userId: userId, createdAt: { $gte: startDate, $lte: endDate } } );
+      if ( goals.length === 0 ) {
+        return res.status( 404 ).json( { message: 'Användare med konto skapade i angiven tidsperiod hittades inte' } );
+      }
+      res.status( 200 ).json( goals );
+    } catch ( error ) {
+      res.status( 500 ).json( { message: "Ett fel uppstod på servern vid hämtning av måll efter skapandedatum.", error } );
+    }
+  } );
+
+
+  // Skapar en POST-route för att lägga till ett nytt måll
+  server.post( '/api/goals', async ( req, res ) => {
+    try {
+        const newGoal = new Goal( {
+        userId: req.body.userId,
         type: req.body.type,
         target: req.body.target,
         createdAt: req.body.createdAt
