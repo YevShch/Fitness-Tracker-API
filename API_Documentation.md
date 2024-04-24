@@ -197,7 +197,7 @@ Retrieve information about step counts.
     "count": 17726,
     "__v": 0
 } 
-
+```
 ## PUT
 ### Request Example
 - Update the user:
@@ -206,7 +206,8 @@ Retrieve information about step counts.
 ```json
 {
     "username": "Wyman75"
-}  
+} 
+``` 
 ### Response Example:
 **Status Code:** 200 OK
 ```json
@@ -218,7 +219,7 @@ Retrieve information about step counts.
     "createdAt": "2023-08-30T13:37:28.041Z",
     "__v": 0
 }
-
+```
 ## POST
 ### Request Example
 - Create a new activity:
@@ -233,7 +234,7 @@ Retrieve information about step counts.
 "caloriesBurned": 574,
 "createdAt": "2024-04-24T03:58:42.652Z"
 }
-
+```
 ### Response Example:
 **Status Code:** 201 OK
 ```json
@@ -247,7 +248,7 @@ Retrieve information about step counts.
     "_id": "66293e4a6b4412fd99994c46",
     "__v": 0
 }
-
+```
 ## DELETE
 ### Request Example:
 - Remove the goal:
@@ -261,3 +262,4 @@ Retrieve information about step counts.
     "message": "Målet har raderats!"
 }
 }
+```
