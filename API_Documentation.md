@@ -1,5 +1,5 @@
 # Fitness Tracker API Documentation 
-:muscle: :running: :athletic_shoe: :biking_man: :dancer:  
+:muscle: :running: :biking_man: :dancer: :athletic_shoe:
 ## Description
 The Fitness Tracker API allows users to track their activities, step counts, and set goals to achieve fitness targets. It provides endpoints to manage user accounts, record activities, monitor step counts, and set goals. With this API, developers can build applications to help users stay fit and achieve their fitness goals.
 
@@ -197,16 +197,14 @@ Retrieve information about step counts.
 }
 ```
 
-### DELETE Request Example - Remove the goal.
-  - `DELETE http://localhost:3000/api/goals/661e34c6aa109d60e8257252`
+### DELETE Request Example - Remove the user.
+  - `DELETE http://localhost:3000/api/users/661e330cbca6df6cdde0b7e1`
 
 ### Response Example:
 **Status Code:** 200 OK
 ```json
 {
-  {
-    "message": "Målet har raderats!"
-}
+    "message": "User deleted successfully."
 }
 ```
 ## Status Codes  
