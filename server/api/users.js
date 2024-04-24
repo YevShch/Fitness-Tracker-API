@@ -6,7 +6,7 @@ export default function ( server, mongoose ) {
   let isConnected = false;
 
   // GET-route för att hämta alla användare
-  server.get( "/api/users", async ( req, res ) => {
+  server.get( "/api/users/all", async ( req, res ) => {
     try {
       if ( req.query.disconnect === "true" ) {
         if ( isConnected ) {
@@ -32,6 +32,39 @@ export default function ( server, mongoose ) {
     }
   } );
 
+  // GET route for paginated and sorted users
+  server.get( '/api/users', async ( req, res ) => {
+    try {
+      const page = parseInt( req.query.page ) || 1; // current page
+      const limit = parseInt( req.query.limit ) || 10; // items per page
+      const sortField = req.query.sortField || '_id'; // field for sorting
+      const sortOrder = req.query.sortOrder || 'asc'; // sorting order
+
+      const sortOptions = {};
+      sortOptions[ sortField ] = sortOrder === 'asc' ? 1 : -1;
+
+      const totalUsers = await User.countDocuments( {} );
+      const totalPages = Math.ceil( totalUsers / limit );
+      const skip = ( page - 1 ) * limit;
+
+      const users = await User.find( {} )
+        .sort( sortOptions )
+        .skip( skip )
+        .limit( limit );
+
+      res.status( 200 ).json( {
+        users,
+        currentPage: page,
+        totalPages,
+        totalUsers
+      } );
+    } catch ( error ) {
+      console.error( error );
+      res.status( 500 ).json( { message: 'An error occurred', error } );
+    }
+  } );
+
+
   // Skapar en GET-route för att hämta en specifik användare med ID
   server.get( '/api/users/:id', async ( req, res ) => {
     try {
@@ -44,7 +77,6 @@ export default function ( server, mongoose ) {
       res.status( 500 ).json( { message: "Ett fel uppstod på servern vid hämtning av en användare." } );
     }
   } );
-
 
 
   // GET-route för sökning av en användare efter användarnamn
@@ -63,7 +95,7 @@ export default function ( server, mongoose ) {
 
 
   // GET-route för sökning av användare efter en del av användarnamn  
-  server.get( "/api/users/searchByUsername/:username", async ( req, res ) => {
+  server.get( "/api/users/partOfUsername/:username", async ( req, res ) => {
     try {
       const username = req.params.username;
       // Användук ett uttryck för att söka efter användare utifrån en del av deras namn

@@ -64,8 +64,36 @@ Retrieve information about activities.
 
 - `GET /activities?userId={userId}&minMinutes={Na}&maxMinutes={Na}` Retrieve activities for a user by duration.
 
-- `PUT /api/activities/{userId}` Update an activity.
+- `PUT /activities/{userId}` Update an activity.
 
-- `POST /api/activities` Create a new activity.
+- `POST /activities` Create a new activity.
 
-- `DELETE /api/activities/{userId}`  Remove an activity.
+- `DELETE /activities/{userId}`  Remove an activity.
+
+## /users 
+
+Retrieve information about activities.
+
+-  `GET /users/all` Retrieve all users.
+
+- `GET /users?page={}&limit={}` Retrieve users with pagination.
+
+- `GET /users?page=2&limit=10&sortField=name&sortOrder=asc` Retrieve sorted users with pagination and ascending order.
+
+- `GET /users/{userId}`  Retrieve a user by Id.
+
+- `GET /users/email/{email}` Retrieve a user by email.
+
+- `GET /users/username/{username}` Retrieve a user by username.
+
+- `GET /users/partOfUsername/{part of name}` Retrieve users by part of username.
+
+- `GET /users/createdAt/YYYY-MM-DD` Retrieve users by date of account creation.
+
+- `GET /users/createdAt/YYYY-MM-DD/YYYY-MM-DD` Retrieve users by date of account creation in certain period of time.
+
+- `PUT /users/{userId}` Update a user.
+
+- `POST /users` Create a new user.
+
+- `DELETE /users/{userId}`  Remove a user.
