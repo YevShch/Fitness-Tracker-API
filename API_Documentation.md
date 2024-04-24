@@ -3,7 +3,7 @@
 ## Description
 The Fitness Tracker API allows users to track their activities, step counts, and set goals to achieve fitness targets. It provides endpoints to manage user accounts, record activities, monitor step counts, and set goals. With this API, developers can build applications to help users stay fit and achieve their fitness goals.
 
-# Authentication
+## Authentication
 
 While this API currently does not require user authentication for accessing its endpoints, there is potential for authentication to be implemented or further developed in the future to enhance the security of user data.
 
@@ -202,6 +202,7 @@ Retrieve information about step counts.
 ### Request Example
 - Update the user:
   - `PUT http://localhost:3000/api/users/661e34c0aa109d60e825717c`
+
 **Body:**
 ```json
 {
@@ -224,6 +225,7 @@ Retrieve information about step counts.
 ### Request Example
 - Create a new activity:
   - `GET http://localhost:3000/api/activities`
+
 **Body:**
 ```json
 {
