@@ -16,14 +16,20 @@ export default function ( server, mongoose ) {
 
   // Skapar en GET-route för att hämta en specifik stegräkning med ett specifikt ID
   server.get( '/api/stepCounts/:id', async ( req, res ) => {
+    const stepCountId = req.params.id;
+
+    if ( !mongoose.Types.ObjectId.isValid( stepCountId ) ) {
+      return res.status( 400 ).json( { message: 'Invalid ID' } );
+    }
+
     try {
-      const stepCounts = await StepCount.findById( req.params.id ); // Hämtar Antal steg med ID från databasen.
+      const stepCounts = await StepCount.findById( stepCountId );
       if ( !stepCounts ) {
-        return res.status( 404 ).json( { message: "Antal steg hittades inte" } );
+        return res.status( 404 ).json( { message: 'Antal steg hittades inte' } );
       }
       res.json( stepCounts );
     } catch ( error ) {
-      res.status( 500 ).json( { message: "Ett fel uppstod på servern vid hämtning av antal steg." } );
+      res.status( 500 ).json( { message: 'Ett fel uppstod på servern vid hämtning av antal steg.' } );
     }
   } );
 
