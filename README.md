@@ -1,8 +1,10 @@
 # Fitness Tracker
- This project serves as a school assignment for the development and testing of the API, utilizing MongoDB, mongoose, fakerjs.dev, and a server.
+ This project serves as a school assignment for the development and testing of the API, aimed at utilizing MongoDB, mongoose, fakerjs.dev, and a server.
  
+ Additionally, the project focuses on API testing, featuring a Postman collection for testing purposes. You can access the Postman collection and documentation for API testing at the following links: [API Testing Documentation](....)
+ [Postman Collection](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/collection/33841208-94536aae-954b-41dd-a659-31841f79e949?action=share&creator=33841208
+ )
 For comprehensive details on how to use the API, refer to the API documentation available at the following link: [API Documentation](https://github.com/YevShch/Fitness-Tracker/blob/dev/API_Documentation.md)
-
 
 ## API Installation Guide
 
@@ -48,8 +50,14 @@ Replace <https://github.com/YevShch/Fitness-Tracker.git> with the URL of your re
    ```
    You can find documentation for Faker.js on the official website: https://fakerjs.dev/
 
-10. **Adjust mock data settings:** Customize the amount of mock data by modifying the number of objects/rows for each model in the "seedDB.js" file.
-
+10. **Adjust mock data settings:** Customize the amount of mock data by modifying the number of objects/rows for each model in the "seedDB.js" file:
+```javascript
+ // Generating data for users, activities, goals, and step counts
+    const usersList = await createUsers( 30 );
+    const activityList = await createActivities( 90, usersList );
+    const goalsList = await createGoals( 50, usersList );
+    const stepCountsList = await createStepCounts( 120, usersList );
+```
 11. **Run seed script:** Generate mock data by running the following command in the terminal:
     ```bash
     node seedDB.js
