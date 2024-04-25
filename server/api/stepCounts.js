@@ -33,7 +33,7 @@ export default function ( server, mongoose ) {
     try {
       const userId = req.params.userId;
       const stepCounts = await StepCount.find( { userId: userId } )
-      // .populate( 'authors' );
+      // .populate( 'users' );
       res.status( 200 ).json( stepCounts );
     } catch ( error ) {
       console.error( error ); // Skriver ut felet till konsolen
@@ -88,8 +88,8 @@ export default function ( server, mongoose ) {
     try {
       const updatedStepCount = await StepCount.findByIdAndUpdate( req.params.id, req.body )
       // .populate( {
-      //   path: 'authors',
-      //   select: '-books'
+      //   path: 'users',
+      //   select: '-createdAt'
       // } );
       if ( !updatedStepCount ) {
         return res.status( 404 ).json( { message: 'Antal steg hittades inte' } );

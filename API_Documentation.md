@@ -11,6 +11,7 @@ Authentication can be achieved using access tokens or other authentication mecha
 
 
 ## Models:
+Information about the structure of each model in the API helps users utilize the API more effectively and accurately. It allows users to understand the data expected from or provided to the API, validate the correctness of data, perform data manipulations like creation, reading, updating, and deleting, and integrate the API with other services.
 
 ### Activity :runner: 
 Represents an activity tracked by the Fitness Tracker.
@@ -49,14 +50,14 @@ The base URL for the Fitness Tracker API is `http://localhost:3000/api/`.
 ## /activities
 Retrieve information about activities.
 -  `GET /activities/all` Retrieve all activities.
-- `GET /activities?page={}&limit={}` Retrieve activities with pagination.
-- `GET /activities?page=2&limit=10&sortField=name&sortOrder=asc` Retrieve sorted activities with pagination and ascending order.
+- `GET /activities?page={pageNumber}&limit={limitNumber}` Retrieve activities with pagination.
+- `GET /activities?page={pageNumber}&limit={limitNumber}&sortField={name}&sortOrder=asc` Retrieve sorted activities with pagination and ascending order.
 - `GET /activities?byType={type}` Retrieve activities by type.
 - `GET /activities?userId={userId}&byType={type}` Retrieve activities for a specific user by type.
 - `GET /activities?userId={userId}1&minCalories={Na}&maxCalories={Na}` Retrieve activities for a specific user by burned calories.
 - `GET /activities?userId={userId}&startDate={YYYY-MM-DD}&endDate={YYYY-MM-DD}` Retrieve activities for a specific user by date of creation.
 - `GET /activities?userId={userId}&startTimeBefore={YYYY-MM-DD}&startTimeAfter={YYYY-MM-DD}` Retrieve activities for a user by the date of start.
-- `GET /activities?userId={userId}&minMinutes={Na}&maxMinutes={Na}` Retrieve activities for a user by duration.
+- `GET /activities?userId={userId}&minMinutes={minutesNumber}&maxMinutes={minutesNumber}` Retrieve activities for a user by duration.
 - `PUT /activities/{userId}` Update an activity.
 - `POST /activities` Create a new activity.
 - `DELETE /activities/{userId}`  Remove an activity. 
@@ -76,12 +77,12 @@ Retrieve information about activities.
 ## /users 
 Retrieve information about users.
 -  `GET /users/all` Retrieve all users.
-- `GET /users?page={}&limit={}` Retrieve users with pagination.
-- `GET /users?page={Na}&limit={Na}&sortField={name}&sortOrder=asc` Retrieve sorted users with pagination and ascending order.
+- `GET /users?page={pageNumber}&limit={limitNumber}` Retrieve users with pagination.
+- `GET /users?page={pageNumber}&limit={limitNumber}&sortField={name}&sortOrder=asc` Retrieve sorted users with pagination and ascending order.
 - `GET /users/{userId}`  Retrieve a user by Id.
 - `GET /users/email/{email}` Retrieve a user by email.
 - `GET /users/username/{username}` Retrieve a user by username.
-- `GET /users/partOfUsername/{part of name}` Retrieve users by part of username.
+- `GET /users/partOfUsername/{part_of_name}` Retrieve users by part of username.
 - `GET /users/createdAt/YYYY-MM-DD` Retrieve users by date of account creation.
 - `GET /users/createdAt/YYYY-MM-DD/YYYY-MM-DD` Retrieve users by date of account creation in certain period of time.
 - `PUT /users/{userId}` Update a user.
@@ -99,8 +100,8 @@ Retrieve information about users.
 ## /goals 
 Retrieve information about goals.
 -  `GET /goals/all` Retrieve all goals.
-- `GET goals?page={}&limit={}` Retrieve goals with pagination.
-- `GET /goals?page={Na}&limit={Na}&sortField={name}&sortOrder=asc` Retrieve sorted goals with pagination and ascending order.
+- `GET goals?page={pageNumber}&limit={limitNumber}` Retrieve goals with pagination.
+- `GET /goals?page={pageNumber}&limit={limitNumber}&sortField={name}&sortOrder=asc` Retrieve sorted goals with pagination and ascending order.
 - `GET goals/{Id}`  Retrieve a goal by Id.
 - `GET /goals/user/{userId}` Retrieve goals for a spesific user.
 - `GET /goals/user/{userId}/{type_name}` Retrieve goals for specific user by type.
