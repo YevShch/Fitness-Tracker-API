@@ -1,4 +1,5 @@
 ## Manual Testing Documentation
+Access the Postman collection for API testing at the following link: [Postman Collection](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/collection/33841208-94536aae-954b-41dd-a659-31841f79e949?action=share&creator=33841208)
 
 ### Manual Test 1: Verify HTTP Status Code for GET Request
 #### Purpose
