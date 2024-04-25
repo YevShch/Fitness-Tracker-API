@@ -1,4 +1,4 @@
-# Fitness Tracker :bicyclist:
+# Fitness Tracker API :bicyclist:
  This project serves as a school assignment for the development and testing of the API, aimed at utilizing MongoDB, mongoose, fakerjs.dev, and a server.
  
  Additionally, the project focuses on API testing, featuring a Postman collection for testing purposes. You can access the Postman collection and documentation for API testing at the following links:
