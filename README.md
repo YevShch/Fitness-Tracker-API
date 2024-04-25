@@ -1,4 +1,4 @@
-# Fitness Tracker
+# Fitness Tracker :bicyclist:
  This project serves as a school assignment for the development and testing of the API, aimed at utilizing MongoDB, mongoose, fakerjs.dev, and a server.
  
  Additionally, the project focuses on API testing, featuring a Postman collection for testing purposes. You can access the Postman collection and documentation for API testing at the following links:
@@ -53,7 +53,7 @@ Replace <https://github.com/YevShch/Fitness-Tracker.git> with the URL of your re
    ```
    You can find documentation for Faker.js on the official website: https://fakerjs.dev/
 
-10. **Adjust mock data settings:** Customize the amount of mock data by modifying the number of objects/rows for each model in the "seedDB.js" file:
+10. **Adjust mock data settings:** Customize the amount of mock data by modifying the number of objects for each model in the "seedDB.js" file:
 ```javascript
  // Generating data for users, activities, goals, and step counts
     const usersList = await createUsers( 30 );
@@ -78,4 +78,5 @@ Replace <https://github.com/YevShch/Fitness-Tracker.git> with the URL of your re
     npm install bcrypt --save-dev
     ```
 
-Following these steps will successfully set up your API and populate your database with mock data.
+Following these steps will successfully set up your API and populate your database with mock data. :satellite:
+
