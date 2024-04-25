@@ -192,8 +192,16 @@ export default function ( server, mongoose ) {
           isConnected = true;
         }
       }
+      //Check the email format 
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const isValidEmail = emailRegex.test( req.body.email );
+      if ( !isValidEmail ) {
+        return res.status( 400 ).json( { message: "Invalid email format" } );
+      }
+
       // Kollar om användare med visst email existerar
       const existingEmail = await User.findOne( { email: req.body.email } );
+
       if ( existingEmail ) {
         return res.status( 400 ).json( { message: 'Email already exists' } );
       }

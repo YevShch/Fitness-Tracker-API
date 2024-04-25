@@ -224,3 +224,6 @@ The **Fitness Tracker API** returns the following status codes:
 ```json 
   { "error": "An error occurred on the server while fetching users" }
    ``` 
+## API Rate Limiting
+
+To maintain the stability and performance of the API, rate limiting is implemented. The current rate limit configuration is set to allow a maximum of **100 requests per IP address within a 15-minute window**. This helps prevent abuse or excessive use of resources, ensuring fair access to all users.

@@ -157,3 +157,140 @@ For each HTTP method and endpoint:
 - Test Name: Test API Handling of Different HTTP Methods
 - Location: /Manual Tests/HTTP Methods Handling
 
+### Manual Test 9: Test API Handling of Record Updates
+
+#### Purpose
+To verify that the API correctly handles updates to existing records, ensuring that changes are saved and reflected in subsequent requests.
+#### Steps:
+1. Create a collection for the tests.
+2. Send a GET request to the endpoint to retrieve the existing record -  `api/goals/661e34c6aa109d60e8257250`
+3. Note down the current state of the record. 
+4. Send a PUT request to update the record with new data - `api/goals/661e34c6aa109d60e8257250`
+ ```json
+{
+    "type": "boost_energy",
+    "target": "Incorporate more fruits and vegetables into diet"
+}
+```
+5. Send a GET request again to retrieve the updated record - `api/goals/661e34c6aa109d60e8257250`
+6. Compare the updated record with the previous state to ensure that changes are reflected.
+#### Expected Result
+The API should update the existing record with the new data and return a status code 200 OK. The updated record should reflect the changes made.
+#### Actual Result
+PUT status code: 200 OK
+The API successfully updated the existing record, and the changes were reflected in subsequent requests.
+ ```json
+{
+    "_id": "661e34c6aa109d60e8257250",
+    "userId": "661e34c0aa109d60e825717a",
+    "type": "boost_energy",
+    "target": "Incorporate more fruits and vegetables into diet",
+    "createdAt": "2024-01-19T05:12:03.410Z",
+    "__v": 0
+}
+ ```
+#### Test Notes
+- Test Name: Test API Handling of Record Updates
+- Location: /Manual Tests/Record Updates Handling
+
+### Manual Test 10: Test API Performance Under Heavy Load
+#### Purpose
+Test the API’s performance under heavy load, simulating a large number of users making requests simultaneously.
+#### Steps:
+1. Create a collection with multiple GET requests.
+2. Run the collection with 100 iterations.
+#### Expected Result
+The API should perform well under heavy load.
+#### Actual Result
+- All tests returned a status code of 200 OK.
+- None of the requests failed.
+- Iterations: 100
+- All tests: 500
+- Average Response Time: 54ms
+- Duration: 1 minute 19 seconds 
+#### Test Notes
+- Test Name: Test API Performance Under Heavy Load
+- Location: /Manual Tests/Test API Performance
+
+### Manual Testing 11: Verify API Recovery from Failures
+#### Purpose
+To verify that the API can recover gracefully from failures, such as database connection issues, without compromising data integrity.
+#### Steps:
+1. Introduce a simulated database connection issue (stop the database service).
+2. Send a request to the API endpoint that requires database access - `/api/stepCounts/661e330dbca6df6cdde0b803`
+3. Observe the API's response.
+#### Expected Result
+The API should handle the database connection issue gracefully, returning an appropriate error response without compromising data integrity.
+#### Actual Result
+- The API returned an appropriate error response indicating the database connection issue.
+- Data integrity was maintained; no data corruption or loss occurred.
+#### Test Notes
+- Test Name: Verify API Recovery from Failures
+- Location: /Manual Tests
+
+### Manual Test 12: Test the API’s ability to handle edge cases
+#### Purpose
+To verify that the API handles edge cases, such as requests with missing or invalid parameters, and returns appropriate error messages.
+#### Steps:
+1. Send a POST request to `/api/users` with missing `username` parameter.
+2. Send a POST request to `/api/users` with missing `email` parameter.
+3. Send a POST request to `/api/users` with missing `password` parameter.
+4. Send a POST request to `/api/users` with invalid email format.
+5. Send a POST request to `/api/users` with a duplicate email value.
+
+#### Expected Result
+Each request should return the appropriate error message for the specific edge case.
+
+#### Actual Results
+- Request 1: Error message returned for missing `username` parameter.
+ ```json
+{
+    "message": "An error occurred on the server while creating a new user",
+    "error": "User validation failed: username: Path `username` is required."
+}
+ ```
+- Request 2: Error message returned for missing `email` parameter.
+ ```json
+{
+    "message": "An error occurred on the server while creating a new user",
+    "error": "User validation failed: email: Path `email` is required."
+}
+ ```
+- Request 3: Error message returned for missing `password` parameter.
+ ```json
+{
+    "message": "An error occurred on the server while creating a new user",
+    "error": "User validation failed: password: Path `password` is required."
+}
+ ```
+- Request 4: Error message returned for invalid email format.
+ ```json
+ {
+    "message": "Invalid email format"
+}
+  ```
+- Request 5: Error message returned for duplicate email value.
+```json
+{
+    "message": "Email already exists"
+}
+ ```
+#### Test Notes
+- Test Name: Verify API Rate Limiting
+- Location: /Manual Tests/Edge cases
+
+### Manual Test 13: Verify API Rate Limiting
+#### Purpose
+To ensure that the API correctly implements rate limiting or throttling mechanisms to prevent abuse or excessive use of resources.
+#### Steps:
+1. Send multiple requests to an endpoint within a short time frame.
+2. Observe the API's response to each request.
+#### Expected Result
+The API should limit the number of requests allowed within the specified time frame and return an appropriate error response (e.g., status code 429 - Too Many Requests) when the limit is exceeded.
+#### Actual Result
+- Requests beyond the allowed limit were met with an appropriate error response (status code 429).
+- The API prevented abuse or excessive use of resources effectively.
+#### Test Notes
+- Test Name: Verify API Rate Limiting
+- Location: /Manual Tests/API Rate Limiting
+

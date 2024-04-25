@@ -77,6 +77,11 @@ Replace <https://github.com/YevShch/Fitness-Tracker.git> with the URL of your re
     ```bash
     npm install bcrypt --save-dev
     ```
+15. **Rate limiting:** To implement rate limiting in your API, first install the `express-rate-limit` package by running the following command in your terminal:
+
+```bash
+npm install express-rate-limit
+```
 
 Following these steps will successfully set up your API and populate your database with mock data. :satellite:
 
