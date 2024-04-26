@@ -1,7 +1,7 @@
-## Manual Testing Documentation
+## Automated Testing Documentation
 Access the Postman collection for API testing at the following link: [Postman Collection](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/collection/33841208-94536aae-954b-41dd-a659-31841f79e949?action=share&creator=33841208)
 
-### Manual Test 1: Verify HTTP Status Code for GET Request
+### Test 1: Verify HTTP Status Code for GET Request
 #### Purpose
 To ensure that the API returns the correct HTTP status code (e.g., 200 OK) for a successful GET request.
 #### Steps:
@@ -14,7 +14,7 @@ Status code: 200 OK
 - Test Name: 1A. HTTP Status Code Validation
 - Location: /Automated Tests
 
-### Manual Test 2. Verify API Response Data Format for JSON
+### Test 2. Verify API Response Data Format for JSON
 #### Objective
 Confirm that the API returns data in the expected format.
 #### Steps to Test
@@ -40,7 +40,7 @@ The response data is formatted as JSON.
 - Test Name: 2A. Data Format Validation
 - Location: /Automated Tests  
 
-### Manual Test 3: Verify Correct HTTP Status Code for Invalid Request
+### Test 3: Verify Correct HTTP Status Code for Invalid Request
 #### Purpose
 To ensure that the API returns the correct HTTP status code for an invalid request.
 #### Steps:
@@ -59,7 +59,7 @@ The API returns status code 404 Not found.
 - Test Name: 3A. Verify Correct HTTP Status Code for Invalid Requests
 - Location: /Automated Tests
 
-### Manual Test 4: Test API with Specific Filters
+### Test 4: Test API with Specific Filters
 #### Purpose
 To verify that the API returns the correct data when querying with specific filters or search criteria.
 #### Steps:
@@ -82,7 +82,7 @@ Each goal has the following properties:
 - Test Name: 4A. Validate API Response with Specific Filters
 - Location: /Automated Tests
 
-### Manual Test 5: Verify API Pagination
+### Test 5: Verify API Pagination
 #### Purpose
 To verify that the API returns paginated results when a large number of records are requested.
 #### Steps:
@@ -101,7 +101,7 @@ The API returns paginated results according to the specified pagination paramete
 
 # To Fix
 
-### Manual Test 6: Check API Handling of Special Characters and Non-English Text
+### Test 6: Check API Handling of Special Characters and Non-English Text
 #### Purpose
 To verify that the API correctly handles special characters and non-English text in input data.
 #### Steps:
@@ -125,7 +125,7 @@ The API should handle the input data containing special characters and non-Engli
 - Test Name: Handling of Special Characters and Non-English Text
 - Location: /Manual Tests
 
-### Manual Test 7: Test API Response with Concurrent Requests
+### Test 7: Test API Response with Concurrent Requests
 #### Purpose
 To ensure that the API can handle multiple users and maintain data consistency when receiving concurrent requests.
 #### Steps:
@@ -145,7 +145,7 @@ The API should handle the concurrent requests gracefully and maintain data consi
 - Test Name: Test API Response with Concurrent Requests
 - Location: /Manual Tests/Concurrent Requests
 
-### Manual Test 8: Test API Handling of Different HTTP Methods
+### Test 8: Test API Handling of Different HTTP Methods
 #### Purpose
 To verify that the API correctly handles different HTTP methods (GET, POST, PUT, DELETE) for each endpoint and returns appropriate status codes and responses for each method.
 #### Steps:
@@ -169,7 +169,7 @@ For each HTTP method and endpoint:
 - Test Name: Test API Handling of Different HTTP Methods
 - Location: /Manual Tests/HTTP Methods Handling
 
-### Manual Test 9: Test API Handling of Record Updates
+### Test 9: Test API Handling of Record Updates
 
 #### Purpose
 To verify that the API correctly handles updates to existing records, ensuring that changes are saved and reflected in subsequent requests.
@@ -205,7 +205,7 @@ The API successfully updated the existing record, and the changes were reflected
 - Test Name: Test API Handling of Record Updates
 - Location: /Manual Tests/Record Updates Handling
 
-### Manual Test 10: Test API Performance Under Heavy Load
+### Test 10: Test API Performance Under Heavy Load
 #### Purpose
 Test the API’s performance under heavy load, simulating a large number of users making requests simultaneously.
 #### Steps:
@@ -224,7 +224,7 @@ The API should perform well under heavy load.
 - Test Name: Test API Performance Under Heavy Load
 - Location: /Manual Tests/Test API Performance
 
-### Manual Testing 11: Verify API Recovery from Failures
+### Test 11: Verify API Recovery from Failures
 #### Purpose
 To verify that the API can recover gracefully from failures, such as database connection issues, without compromising data integrity.
 #### Steps:
@@ -240,7 +240,7 @@ The API should handle the database connection issue gracefully, returning an app
 - Test Name: Verify API Recovery from Failures
 - Location: /Manual Tests
 
-### Manual Test 12: Test the API’s ability to handle edge cases
+### Test 12: Test the API’s ability to handle edge cases
 #### Purpose
 To verify that the API handles edge cases, such as requests with missing or invalid parameters, and returns appropriate error messages.
 #### Steps:
@@ -291,7 +291,7 @@ Each request should return the appropriate error message for the specific edge c
 - Test Name: Verify API Rate Limiting
 - Location: /Manual Tests/Edge cases
 
-### Manual Test 13: Verify API Rate Limiting
+### Test 13: Verify API Rate Limiting
 #### Purpose
 To ensure that the API correctly implements rate limiting or throttling mechanisms to prevent abuse or excessive use of resources.
 #### Steps:
