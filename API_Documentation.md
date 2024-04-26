@@ -1,4 +1,4 @@
-# Fitness Tracker API Documentation 
+# Fitness Tracker API Guide :spiral_notepad:
 :muscle: :running: :biking_man: :dancer: :athletic_shoe:
 ## Description
 The Fitness Tracker API allows users to track their activities, step counts, and set goals to achieve fitness targets. It provides endpoints to manage user accounts, record activities, monitor step counts, and set goals. With this API, developers can build applications to help users stay fit and achieve their fitness goals.
@@ -47,7 +47,7 @@ Represents a goal set by a user in the Fitness Tracker.
 
 The base URL for the Fitness Tracker API is `http://localhost:3000/api/`.
 
-## /activities
+## /activities endpoints :biking_man:
 Retrieve information about activities.
 -  `GET /activities/all` Retrieve all activities.
 - `GET /activities?page={pageNumber}&limit={limitNumber}` Retrieve activities with pagination.
@@ -74,7 +74,7 @@ Retrieve information about activities.
 - **minMinutes:** The minimum duration of the activity in minutes.
 - **maxMinutes:** The maximum duration of the activity in minutes.
 
-## /users 
+## /users endpoints bust_in_silhouette::muscle:
 Retrieve information about users.
 -  `GET /users/all` Retrieve all users.
 - `GET /users?page={pageNumber}&limit={limitNumber}` Retrieve users with pagination.
@@ -97,7 +97,7 @@ Retrieve information about users.
 - **createdAt:** The date of the account creation.
 
 
-## /goals 
+## /goals endpoints :trophy:
 Retrieve information about goals.
 -  `GET /goals/all` Retrieve all goals.
 - `GET goals?page={pageNumber}&limit={limitNumber}` Retrieve goals with pagination.
@@ -116,7 +116,7 @@ Retrieve information about goals.
 - **type_name:** The type of the goal.
 - **createdAt:** The date of the goal creation.
 
-## /stepCounts 
+## /stepCounts endpoints :walking:
 Retrieve information about step counts.
 -  `GET /stepCounts` Retrieve all step counts.
 - `GET stepCounts/{_id}`  Retrieve a step count by Id.

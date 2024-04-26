@@ -32,28 +32,34 @@ Replace <https://github.com/YevShch/Fitness-Tracker.git> with the URL of your re
    ```bash
    npm install express mongoose
    ```
+5. **Database Connection:** In the server.js file, locate the mongoose.connect() function and replace the database connection string 
+```javascript
+(`mongoose.connect("mongodb+srv://<Username>:<Password>@cluster0.nyncb7g.mongodb.net/<DB-Name>")`) 
+```
+with the link to your MongoDB database. You can find this link in your MongoDB dashboard. 
+Ensure that the format and structure of the connection string remain the same.
 
-5. **Update package.json:** Open your "package.json" file and add the following line to specify the module type:
+6. **Update package.json:** Open your "package.json" file and add the following line to specify the module type:
    ```json
    "type": "module"
    ```
 
-6. **Run the server:** Start your server by running the following command in the terminal:
+7. **Run the server:** Start your server by running the following command in the terminal:
    ```bash
    node server.js
    ```
 
-7. **Verify server status:** Once the server is running, you should see the message "Listening on port http://localhost:3000" in the terminal.
+8. **Verify server status:** Once the server is running, you should see the message "Listening on port http://localhost:3000" in the terminal.
 
-8. **Access API endpoints:** Navigate to "http://localhost:3000/api/users" in your browser to view all documents in the "users" collection of your database. If there is no data, you will see an empty array ("[]").
+9. **Access API endpoints:** Navigate to "http://localhost:3000/api/users" in your browser to view all documents in the "users" collection of your database. If there is no data, you will see an empty array ("[]").
 
-9. **Generate mock data:** To generate mock data, install Faker.js by running the following command in the terminal:
+10. **Generate mock data:** To generate mock data, install Faker.js by running the following command in the terminal:
    ```bash
    npm install @faker-js/faker --save-dev
    ```
    You can find documentation for Faker.js on the official website: https://fakerjs.dev/
 
-10. **Adjust mock data settings:** Customize the amount of mock data by modifying the number of objects for each model in the "seedDB.js" file:
+11. **Adjust mock data settings:** Customize the amount of mock data by modifying the number of objects for each model in the "seedDB.js" file:
 ```javascript
  // Generating data for users, activities, goals, and step counts
     const usersList = await createUsers( 30 );
@@ -61,23 +67,23 @@ Replace <https://github.com/YevShch/Fitness-Tracker.git> with the URL of your re
     const goalsList = await createGoals( 50, usersList );
     const stepCountsList = await createStepCounts( 120, usersList );
 ```
-11. **Run seed script:** Generate mock data by running the following command in the terminal:
+12. **Run seed script:** Generate mock data by running the following command in the terminal:
     ```bash
     node seedDB.js
     ```
 
-12. **Restart the server:** After generating mock data, restart the server by running:
+13. **Restart the server:** After generating mock data, restart the server by running:
     ```bash
     node server.js
     ```
 
-13. **View database data:** You can now view the generated data in your database.
+14. **View database data:** You can now view the generated data in your database.
 
-14. **Hash user passwords:** Utilize password hashing for user passwords by installing the bcrypt library. Run the following command in the terminal:
+15. **Hash user passwords:** Utilize password hashing for user passwords by installing the bcrypt library. Run the following command in the terminal:
     ```bash
     npm install bcrypt --save-dev
     ```
-15. **Rate limiting:** To implement rate limiting in your API, first install the `express-rate-limit` package by running the following command in your terminal:
+16. **Rate limiting:** To implement rate limiting in your API, first install the `express-rate-limit` package by running the following command in your terminal:
 
 ```bash
 npm install express-rate-limit

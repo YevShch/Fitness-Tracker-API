@@ -12,7 +12,7 @@ Status code: 200 OK
 Status code: 200 OK
 #### Test Notes
 - Test Name: 1A. HTTP Status Code Validation
-- Location: /Automated Tests
+- Location: /Automated  [Automated Test #1](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/request/33841208-6b9cabff-f43b-4aeb-a6af-53b8ce06baea?tab=tests)
 
 ### Test 2. Verify API Response Data Format for JSON
 #### Objective
@@ -38,7 +38,7 @@ The response data is formatted as JSON.
 ```
 #### Test Notes
 - Test Name: 2A. Data Format Validation
-- Location: /Automated Tests  
+- Location: /Automated Tests [Automated Test #2](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/request/33841208-f112ac8e-e839-48b6-981c-459b4e1d849a?tab=tests) 
 
 ### Test 3: Verify Correct HTTP Status Code for Invalid Request
 #### Purpose
@@ -57,7 +57,7 @@ The API returns status code 404 Not found.
 ```
 #### Test Notes
 - Test Name: 3A. Verify Correct HTTP Status Code for Invalid Requests
-- Location: /Automated Tests
+- Location: /Automated Tests [Automated Test #3](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/request/33841208-fa491968-6cf3-4820-b59d-e8a55f6da8ef?tab=tests)
 
 ### Test 4: Test API with Specific Filters
 #### Purpose
@@ -80,7 +80,8 @@ Each goal has the following properties:
 - The createdAt property of each goal is within the specified range.
 #### Test Notes
 - Test Name: 4A. Validate API Response with Specific Filters
-- Location: /Automated Tests
+- Location: /Automated Tests [Automated Test #4](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/request/33841208-02581d59-65fd-4248-8f24-f7e696632c7f?tab=tests)
+
 
 ### Test 5: Verify API Pagination
 #### Purpose
@@ -97,7 +98,7 @@ The API returns paginated results according to the specified pagination paramete
 - Page 2 of the results is returned, with 5 records per page.
 #### Test Notes
 - Test Name: 5A. Verify Paginated Results for Large Number of Records
-- Location: /Automated Tests  [Automated Tests #5](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/request/33841208-505e74e2-27cc-42d7-80bc-f932d1769d24?active-environment=c134afa8-911a-452d-bae2-c7bf63ae73dc)
+- Location: /Automated Tests  [Automated Tests #5](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/request/33841208-505e74e2-27cc-42d7-80bc-f932d1769d24?tab=tests)
 
 # To Fix
 
@@ -122,8 +123,8 @@ The API should handle the input data containing special characters and non-Engli
 - The 'type' field is updated with the provided value containing special characters and non-English text.
 - The 'target' field is updated with the provided value containing special characters.
 #### Test Notes
-- Test Name: Handling of Special Characters and Non-English Text
-- Location: /Manual Tests
+- Test Name: 6A. Test Handling of Special Characters and Non-English Text
+- Location: /Automated Tests [Automated Test #6](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/request/33841208-7de4d05e-6757-4a4c-ab28-507429183a0e)
 
 ### Test 7: Test API Response with Concurrent Requests
 #### Purpose
@@ -143,7 +144,7 @@ The API should handle the concurrent requests gracefully and maintain data consi
 - Data remains consistent across all requests, with no unexpected changes.
 #### Test Notes
 - Test Name: Test API Response with Concurrent Requests
-- Location: /Manual Tests/Concurrent Requests
+- Location: /Automated Tests/Concurrent Requests [Automated Test #7](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/folder/33841208-cf0405d2-982e-4f57-a79b-77c4bb232aaf)
 
 ### Test 8: Test API Handling of Different HTTP Methods
 #### Purpose
@@ -167,7 +168,7 @@ For each HTTP method and endpoint:
 - DELETE: The API successfully deletes resources and returns status codes 200.
 #### Test Notes
 - Test Name: Test API Handling of Different HTTP Methods
-- Location: /Manual Tests/HTTP Methods Handling
+- Location: /Automated Tests/8A. API Endpoints Validation [Automated Test #8](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/folder/33841208-5435f64e-3867-499a-8b69-20dcaf3830be)
 
 ### Test 9: Test API Handling of Record Updates
 
@@ -202,8 +203,8 @@ The API successfully updated the existing record, and the changes were reflected
 }
  ```
 #### Test Notes
-- Test Name: Test API Handling of Record Updates
-- Location: /Manual Tests/Record Updates Handling
+- Test Name: 9A. Test for User Record Update
+- Location: /Automated Tests [Automated Test #9](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/request/33841208-0e776962-b987-4e22-b916-5d41161bda4f?tab=tests)
 
 ### Test 10: Test API Performance Under Heavy Load
 #### Purpose
@@ -222,7 +223,7 @@ The API should perform well under heavy load.
 - Duration: 1 minute 19 seconds 
 #### Test Notes
 - Test Name: Test API Performance Under Heavy Load
-- Location: /Manual Tests/Test API Performance
+- Location: /Automated Tests/Test API Performance [Automated Test #10]()
 
 ### Test 11: Verify API Recovery from Failures
 #### Purpose
@@ -238,7 +239,7 @@ The API should handle the database connection issue gracefully, returning an app
 - Data integrity was maintained; no data corruption or loss occurred.
 #### Test Notes
 - Test Name: Verify API Recovery from Failures
-- Location: /Manual Tests
+- Location: /Automated Tests/11A. Database Disconnect Test [Automated Test #11](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/folder/33841208-94f95701-7e2b-4bce-80f3-f8317026ac32)
 
 ### Test 12: Test the API’s ability to handle edge cases
 #### Purpose
@@ -289,7 +290,7 @@ Each request should return the appropriate error message for the specific edge c
  ```
 #### Test Notes
 - Test Name: Verify API Rate Limiting
-- Location: /Manual Tests/Edge cases
+- Location: / Automated Tests/Edge cases [Automated Test #12]()
 
 ### Test 13: Verify API Rate Limiting
 #### Purpose
@@ -304,5 +305,5 @@ The API should limit the number of requests allowed within the specified time fr
 - The API prevented abuse or excessive use of resources effectively.
 #### Test Notes
 - Test Name: Verify API Rate Limiting
-- Location: /Manual Tests/API Rate Limiting
+- Location: / Automated Tests/API Rate Limiting [Automated Test #13]()
 
