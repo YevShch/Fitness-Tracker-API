@@ -97,7 +97,7 @@ The API returns paginated results according to the specified pagination paramete
 - Page 2 of the results is returned, with 5 records per page.
 #### Test Notes
 - Test Name: 5A. Verify Paginated Results for Large Number of Records
-- Location: /Automated Tests  [Automated Tests #5] (https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/request/33841208-505e74e2-27cc-42d7-80bc-f932d1769d24?active-environment=c134afa8-911a-452d-bae2-c7bf63ae73dc)
+- Location: /Automated Tests  [Automated Tests #5](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/request/33841208-505e74e2-27cc-42d7-80bc-f932d1769d24?active-environment=c134afa8-911a-452d-bae2-c7bf63ae73dc)
 
 # To Fix
 
