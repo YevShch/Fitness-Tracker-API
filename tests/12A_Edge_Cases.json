@@ -1,0 +1,248 @@
+{
+	"info": {
+		"_postman_id": "9d61ac49-294e-4548-8e00-eec07242603b",
+		"name": "12A_Edge_Cases",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33841208",
+		"_collection_link": "https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/collection/33841208-9d61ac49-294e-4548-8e00-eec07242603b?action=share&source=collection_link&creator=33841208"
+	},
+	"item": [
+		{
+			"name": "Verification of Handling Missing Username Paramete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify 400 status code and error message for missing username\", function () {\r",
+							"    // Check if the response status code is 400 Bad Request\r",
+							"    pm.response.to.have.status(400);\r",
+							"    \r",
+							"    // Check if the response body contains the expected error message\r",
+							"    pm.expect(pm.response.json().message).to.eql(\"Missing required field(s): username\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"email\": \"fytrudk@gmail.com\",\r\n\"password\": \"ctb725RfgdRfLlNMD\",\r\n\"createdAt\": \"2024-03-20T20:18:36.823Z\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verification of Handling Missing Email Parameter",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify 400 status code and error message for missing email\", function () {\r",
+							"    // Check if the response status code is 400 Bad Request\r",
+							"    pm.response.to.have.status(400);\r",
+							"    \r",
+							"    // Check if the response body contains the expected error message\r",
+							"    pm.expect(pm.response.json().message).to.eql(\"Missing required field(s): email\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"username\": \"User234\",\r\n\"password\": \"ctb725RdRfLlNMD\",\r\n\"createdAt\": \"2024-03-20T20:18:36.823Z\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verification of Handling Missing Password Parameter",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify 400 status code and error message for missing password\", function () {\r",
+							"    // Check if the response status code is 400 Bad Request\r",
+							"    pm.response.to.have.status(400);\r",
+							"    \r",
+							"    // Check if the response body contains the expected error message\r",
+							"    pm.expect(pm.response.json().message).to.eql(\"Missing required field(s): password\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"username\": \"User234Updated\",\r\n\"email\": \"Arely54@gmail.com\",\r\n\"createdAt\": \"2024-03-20T20:18:36.823Z\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verification Handling with invalid email format",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify 400 status code and error message for invalid email format\", function () {\r",
+							"    // Check if the response status code is 400 Bad Request\r",
+							"    pm.response.to.have.status(400);\r",
+							"    \r",
+							"    // Check if the response body contains the expected error message\r",
+							"    pm.expect(pm.response.json().message).to.eql(\"Invalid email format\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"username\": \"Anettette25\",\r\n\"email\": \"Anaisahoo\",\r\n\"password\": \"Faujt7xTAlpIa_\",\r\n\"createdAt\": \"2023-08-02T16:15:03.382Z\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verification of Handling Duplicate Email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify 400 status code and error message for duplicate email\", function () {\r",
+							"    // Check if the response status code is 400 Bad Request\r",
+							"    pm.response.to.have.status(400);\r",
+							"    \r",
+							"    // Check if the response body contains the expected error message\r",
+							"    pm.expect(pm.response.json().message).to.eql(\"Email already exists\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"username\": \"Anton25\",\r\n\"email\": \"Anais.Kuphal@yahoo.com\",\r\n\"password\": \"FawByftrfxTAlpIa_\",\r\n\"createdAt\": \"2023-08-05T16:15:03.382Z\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

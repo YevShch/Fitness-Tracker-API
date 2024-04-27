@@ -7,7 +7,7 @@ To ensure that the API returns the correct HTTP status code (e.g., 200 OK) for a
 #### Steps:
 1. Send a GET request to `/api/activities`.
 #### Expected Result
-Status code: 200 OK
+Status code should be: 200 OK
 #### Actual Result
 Status code: 200 OK
 #### Test Notes
@@ -21,7 +21,7 @@ Confirm that the API returns data in the expected format.
 1. Send a GET request to `/api/stepCounts/661e330dbca6df6cdde0b7ff` 
 and check if the response format matches the expected format JSON.
 #### Expected Result
-The response data is formatted as JSON.
+The response data should be formatted as JSON.
 #### Actual Result
 The response data is formatted as JSON.
 ```json
@@ -44,7 +44,7 @@ To ensure that the API returns the correct HTTP status code (e.g., 400 Bad Reque
 1. Send an invalid request to `/api/stepCounts/invalid_id`
 2. Inspect the response to verify the returned HTTP status code.
 #### Expected Result
-The API returns status code 400 Bad Request.
+The API should return a status code of 400 Bad Request
 #### Actual Result
 The API returns status code 400 Bad Request.
 ```json
@@ -63,9 +63,9 @@ To verify that the API returns the correct data when querying with specific filt
 1. Send a GET request to the endpoint `api/activities` with specific filters included in the query parameters.
    - Example: `api/activities?userId=661e34c0aa109d60e825718c&minMinutes=20&maxMinutes=101`
 #### Expected Result
-The API returns activities that match the specified criteria:
-- User ID matches '661e34c0aa109d60e825718c'.
-- Duration of activities falls within the range of 20 to 101 minutes.
+The API should return activities that match the specified criteria:
+- User ID should matche '661e34c0aa109d60e825718c'.
+- Duration of activities should fall within the range of 20 to 101 minutes.
 #### Actual Result
 - The API returns activities that meet the specified filter criteria.
 - The response contains activities where the user ID matches '661e34c0aa109d60e825718c' and the duration falls within the specified range.
@@ -81,8 +81,8 @@ To verify that the API returns paginated results when a large number of records 
    - Example: `api/goals?page=2&limit=5`
 #### Expected Result
 The API returns paginated results according to the specified pagination parameters:
-- Page 2 of the results is returned.
-- Each page contains a maximum of 5 records.
+- Page 2 of the results should be returned.
+- Each page should contain a maximum of 5 records.
 #### Actual Result
 - The API returns paginated results as expected.
 - Page 2 of the results is returned, with 5 records per page.
@@ -176,7 +176,8 @@ To verify that the API correctly handles updates to existing records, ensuring t
 5. Send a GET request again to retrieve the updated record - `api/goals/661e34c6aa109d60e8257250`
 6. Compare the updated record with the previous state to ensure that changes are reflected.
 #### Expected Result
-The API should update the existing record with the new data and return a status code 200 OK. The updated record should reflect the changes made.
+- The API should update the existing record with the new data and return a status code 200 OK. 
+- The updated record should reflect the changes made.
 #### Actual Result
 PUT status code: 200 OK
 The API successfully updated the existing record, and the changes were reflected in subsequent requests.
@@ -246,22 +247,19 @@ Each request should return the appropriate error message for the specific edge c
 - Request 1: Error message returned for missing `username` parameter.
  ```json
 {
-    "message": "An error occurred on the server while creating a new user",
-    "error": "User validation failed: username: Path `username` is required."
+    "message": "Missing required field(s): username"
 }
  ```
 - Request 2: Error message returned for missing `email` parameter.
  ```json
 {
-    "message": "An error occurred on the server while creating a new user",
-    "error": "User validation failed: email: Path `email` is required."
+     "message": "Missing required field(s): email"
 }
  ```
 - Request 3: Error message returned for missing `password` parameter.
  ```json
 {
-    "message": "An error occurred on the server while creating a new user",
-    "error": "User validation failed: password: Path `password` is required."
+   "message": "Missing required field(s): password"
 }
  ```
 - Request 4: Error message returned for invalid email format.

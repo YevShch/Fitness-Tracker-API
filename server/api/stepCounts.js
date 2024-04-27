@@ -80,7 +80,7 @@ export default function ( server, mongoose ) {
         date: req.body.date,
         count: req.body.count
 
-      } ) // Skapar en ny bok med titel från request body.
+      } ) // Skapar ett nytt måll från request body.
       const savedStepCount = await newStepCount.save() // Sparar den nya antal steg i databasen.
       res.status( 201 ).json( savedStepCount ); // Skickar tillbaka den sparade antal steg som JSON.
     } catch ( error ) {
@@ -114,7 +114,7 @@ export default function ( server, mongoose ) {
       if (!deletedStepCount ) {
         return res.status( 404 ).json( { message: "Antal steg hittades inte" } );
       }
-      res.json( { message: "Antal steg har raderats!" } ); // Bekräftelse på att antalet steg har raderats.
+      res.json( { message: "Step count deleted successfully." } ); // Bekräftelse på att antalet steg har raderats.
     } catch ( error ) {
       console.error( error );
       res.status( 500 ).json( { message: "Ett fel uppstod på servern vid radering av antal steg." } );

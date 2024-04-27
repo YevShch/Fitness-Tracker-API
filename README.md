@@ -91,3 +91,8 @@ npm install express-rate-limit
 
 Following these steps will successfully set up your API and populate your database with mock data. :satellite:
 
+17. **Load testing:** To perform load testing for your application, you can use the loadtest package. Install it as a development dependency by running the following command in your terminal: 
+```bash
+npm install loadtest --save-dev
+```
+This will allow you to execute load tests to evaluate your server's performance under heavy load. 

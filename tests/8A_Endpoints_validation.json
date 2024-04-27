@@ -1,0 +1,1229 @@
+{
+	"info": {
+		"_postman_id": "a47d322d-e3f0-417a-8726-c4d1983d80e0",
+		"name": "8A_Endpoints_validation",
+		"description": "Tests for the API correctly handling of the different HTTP methods (GET, POST, PUT, DELETE) for each endpoint and returns appropriate status codes and responses for each method.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33841208",
+		"_collection_link": "https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/collection/33841208-a47d322d-e3f0-417a-8726-c4d1983d80e0?action=share&source=collection_link&creator=33841208"
+	},
+	"item": [
+		{
+			"name": "Users Endpoints Validation",
+			"item": [
+				{
+					"name": "Get all users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// GET request\r",
+									"pm.test(\"GET request returns status code 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"GET request returns expected user data\", function () {\r",
+									"    pm.expect(pm.response.json()).to.have.property(\"users\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a user(username)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// PUT request\r",
+									"pm.test(\"PUT request returns status code 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"PUT request updates user data\", function () {\r",
+									"    pm.expect(pm.response.json().username).to.eq(\"Wyman75\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\": \"Wyman75\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Host}}/users/662637fd1b8b26c508499edb",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"users",
+								"662637fd1b8b26c508499edb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// POST request\r",
+									"pm.test(\"POST request returns status code 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"POST request returns the created user\", function () {\r",
+									"   const responseBody = pm.response.json();\r",
+									"   \r",
+									"    pm.expect(pm.response.json()).to.have.property(\"username\", \"NewUser1\");\r",
+									"    pm.expect(pm.response.json()).to.have.property(\"email\", \"newuser1@example.com\");\r",
+									"   \r",
+									"   // Capture the ID of the created user\r",
+									"    const userId = responseBody._id;\r",
+									"\r",
+									"  // Set the captured user ID in the environment variable\r",
+									"    pm.environment.set(\"createdUserId\", userId);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"NewUser1\",\r\n    \"email\": \"newuser1@example.com\",\r\n    \"password\": \"wjflxmc75678I!!$\",\r\n    \"createdAt\": \"2024-04-18T16:31:35.000Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove a user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// DELETE request\r",
+									"pm.test(\"DELETE request returns status code 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"DELETE request returns 'User deleted successfully.' message\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"User deleted successfully.\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Host}}/users/{{createdUserId}}",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"users",
+								"{{createdUserId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get a user by part of username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check status code 200\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Check that each username contains 'sa'\r",
+									"pm.test(\"Each username contains 'sa'\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    responseData.forEach(function(user) {\r",
+									"        const username = user.username.toLowerCase(); \r",
+									"        pm.expect(username).to.include(\"sa\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users/partOfUsername/sa",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"partOfUsername",
+								"sa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get a user by Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check status code 200\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// GET request to fetch user by ID\r",
+									"pm.test(\"GET request returns the correct user ID\", function () {\r",
+									"    // Expected user ID\r",
+									"    const expectedUserId = \"661e34c1aa109d60e8257196\";\r",
+									"\r",
+									"    // Parse the response body as JSON\r",
+									"    const responseBody = pm.response.json();\r",
+									"\r",
+									"    // Check if the response contains the user ID\r",
+									"    pm.expect(responseBody).to.have.property(\"_id\");\r",
+									"\r",
+									"    // Get the user ID from the response\r",
+									"    const userIdFromResponse = responseBody._id;\r",
+									"\r",
+									"    // Compare the user ID from the response with the expected user ID\r",
+									"    pm.expect(userIdFromResponse).to.equal(expectedUserId);\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users/661e34c1aa109d60e8257196",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"661e34c1aa109d60e8257196"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get a user by username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check status code 200\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Check that each username contains 'sa'\r",
+									"pm.test(\"Username to equal Hailie_Rodriguez80\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    const actualUsername = responseData.username;\r",
+									"        \r",
+									"        pm.expect(actualUsername).to.eq(\"Hailie_Rodriguez80\");\r",
+									"    });\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users/username/Hailie_Rodriguez80",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"username",
+								"Hailie_Rodriguez80"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Activities Endpoints Validation",
+			"item": [
+				{
+					"name": "get all activities",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// GET request\r",
+									"pm.test(\"GET request returns status code 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"GET request returns expected activity data\", function () {\r",
+									"    pm.expect(pm.response.json()).to.have.property(\"activities\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Host}}/activities",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"activities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update an activity",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// PUT request\r",
+									"pm.test(\"PUT request returns status code 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"type\": \"Hiking\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Host}}/activities/661e330cbca6df6cdde0b7e3",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"activities",
+								"661e330cbca6df6cdde0b7e3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new activity",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// POST request\r",
+									"pm.test(\"POST request returns status code 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"POST request returns the created activity\", function () {\r",
+									"   const responseBody = pm.response.json();\r",
+									"   \r",
+									"    pm.expect(pm.response.json()).to.have.property(\"type\", \"Dancing\");\r",
+									"    pm.expect(pm.response.json()).to.have.property(\"duration\", 64);\r",
+									"   \r",
+									"   // Capture the ID of the created activity\r",
+									"    const activityId = responseBody._id;\r",
+									"    console.log(activityId)\r",
+									"\r",
+									"  // Set the captured activity ID in the environment variable\r",
+									"    pm.environment.set(\"createdActivityId\", activityId);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"userId\": \"661e330bbca6df6cdde0b7dc\",\r\n\"type\": \"Dancing\",\r\n\"startTime\": \"2024-05-16T09:00:45.061Z\",\r\n\"duration\": 64,\r\n\"caloriesBurned\": 574,\r\n\"createdAt\": \"2024-05-17T03:58:42.652Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Host}}/activities",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"activities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove activity",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// DELETE request\r",
+									"pm.test(\"DELETE request returns status code 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"DELETE request returns 'Activity deleted successfully.' message\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"Activity deleted successfully.\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Host}}/activities/{{createdActivityId}}",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"activities",
+								"{{createdActivityId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get activities by user Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check status code 200\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// Check that each activity has userId 661e330bbca6df6cdde0b7dc\r",
+									"pm.test(\"Check that each activity has expected userId\", function () {\r",
+									"    // Expected user ID\r",
+									"    const expectedUserId = \"661e330bbca6df6cdde0b7dc\";\r",
+									"\r",
+									"    // Parse the response body as JSON\r",
+									"    const responseBody = pm.response.json();\r",
+									"\r",
+									"    // Check if the response body is an array and it's not empty\r",
+									"    if (Array.isArray(responseBody) && responseBody.length > 0) {\r",
+									"        // Iterate over each object in the response array\r",
+									"        responseBody.forEach(function (activity) {\r",
+									"            // Get the userId from the current object\r",
+									"           const userIdFromResponse = responseBody[0].userId;\r",
+									"\r",
+									"            // Compare the type from the current object with the expected type\r",
+									"            pm.expect(userIdFromResponse).to.equal(expectedUserId);\r",
+									"        });\r",
+									"    } else {\r",
+									"        console.log(\"Response body is not an array or it's empty\");\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									" \r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Host}}/activities?userId=661e330bbca6df6cdde0b7dc",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"activities"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "661e330bbca6df6cdde0b7dc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get activities by type",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check status code 200\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Check that each activity has type \"Dancing\"\r",
+									"pm.test(\"Each activity has type 'Dancing'\", function () {\r",
+									"    // Expected type\r",
+									"    const expectedType = \"Dancing\";\r",
+									"\r",
+									"    // Parse the response body as JSON\r",
+									"    const responseBody = pm.response.json();\r",
+									"\r",
+									"    // Check if the response body is an array and it's not empty\r",
+									"    if (Array.isArray(responseBody) && responseBody.length > 0) {\r",
+									"        // Iterate over each object in the response array\r",
+									"        responseBody.forEach(function (activity) {\r",
+									"            // Get the type from the current object\r",
+									"            const typeFromResponse = activity.type;\r",
+									"\r",
+									"            // Compare the type from the current object with the expected type\r",
+									"            pm.expect(typeFromResponse).to.equal(expectedType);\r",
+									"        });\r",
+									"    } else {\r",
+									"        console.log(\"Response body is not an array or it's empty\");\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// // Check that first activity has type \"Dancing\"\r",
+									"// pm.test(\"GET request returns the correct user ID for each object\", function () {\r",
+									"//     // Expected user ID\r",
+									"//     const expectedType = \"Dancing\";\r",
+									"\r",
+									"//     // Parse the response body as JSON\r",
+									"//     const responseBody = pm.response.json();\r",
+									"\r",
+									"//     // Check if the response body is an array and it's not empty\r",
+									"//     if (Array.isArray(responseBody) && responseBody.length > 0) {\r",
+									"//         // Get the type the first object in the response array\r",
+									"//         const typeFromResponse = responseBody[0].type;\r",
+									"\r",
+									"//         // Compare the userId from the current object with the expected userId\r",
+									"//         pm.expect(typeFromResponse).to.equal(expectedType);\r",
+									"//     } else {\r",
+									"//         console.log(\"Response body is not an array or it's empty\");\r",
+									"//     }\r",
+									"// });\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Host}}/activities?byType=Dancing",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"activities"
+							],
+							"query": [
+								{
+									"key": "byType",
+									"value": "Dancing"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Step Counts Endpoints Validation",
+			"item": [
+				{
+					"name": "Get all step counts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/stepCounts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"stepCounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all step counts for one user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check status code 200\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// Check that each step count in response has userId 661e330cbca6df6cdde0b7df\r",
+									"pm.test(\"Check that each step count has expected userId\", function () {\r",
+									"    // Expected user ID\r",
+									"    const expectedUserId = \"661e330cbca6df6cdde0b7df\";\r",
+									"\r",
+									"    // Parse the response body as JSON\r",
+									"    const responseBody = pm.response.json();\r",
+									"\r",
+									"    // Check if the response body is an array and it's not empty\r",
+									"    if (Array.isArray(responseBody) && responseBody.length > 0) {\r",
+									"        // Iterate over each object in the response array\r",
+									"        responseBody.forEach(function (activity) {\r",
+									"            // Get the userId from the current object\r",
+									"           const userIdFromResponse = responseBody[0].userId;\r",
+									"\r",
+									"            // Compare the type from the current object with the expected type\r",
+									"            pm.expect(userIdFromResponse).to.equal(expectedUserId);\r",
+									"        });\r",
+									"    } else {\r",
+									"        console.log(\"Response body is not an array or it's empty\");\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Host}}/stepCounts/user/661e330cbca6df6cdde0b7df",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"stepCounts",
+								"user",
+								"661e330cbca6df6cdde0b7df"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new step count",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// POST request\r",
+									"pm.test(\"POST request returns status code 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"POST request returns the created step count\", function () {\r",
+									"   const responseBody = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(pm.response.json()).to.have.property(\"userId\", \"661e330cbca6df6cdde0b7df\");\r",
+									"    pm.expect(pm.response.json()).to.have.property(\"date\", \"2024-04-20T10:36:34.951Z\");\r",
+									"    pm.expect(pm.response.json()).to.have.property(\"count\", 15030);\r",
+									"   // Capture the ID of the created activity\r",
+									"    const stepCountId = responseBody._id;\r",
+									"    console.log(stepCountId);\r",
+									"\r",
+									"\r",
+									"  // Set the captured activity ID in the environment variable\r",
+									"    pm.environment.set(\"createdStepCountId\", stepCountId);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \"userId\": \"661e330cbca6df6cdde0b7df\",\r\n\"date\": \"2024-04-20T10:36:34.951Z\",\r\n\"count\": 15030\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Host}}/stepCounts",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"stepCounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a step count",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// GET request\r",
+									"pm.test(\"GET request returns status code 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"date\": \"2024-04-20T03:23:42.984Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Host}}/stepCounts/661e330dbca6df6cdde0b803",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"stepCounts",
+								"661e330dbca6df6cdde0b803"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove a step count",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// DELETE request\r",
+									"pm.test(\"DELETE request returns status code 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"DELETE request returns 'User deleted successfully.' message\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"Step count deleted successfully.\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Host}}/stepCounts/{{createdStepCountId}}",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"stepCounts",
+								"{{createdStepCountId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Goals Endpoints Validation",
+			"item": [
+				{
+					"name": "Get all goals",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// GET request return status code 200\r",
+									"pm.test(\"GET request returns status code 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// Check the presence of fields in each object of the response\r",
+									"pm.test(\"Check the presence of required fields in each object\", function () {\r",
+									"    // Expected fields\r",
+									"    const expectedFields = [\"_id\", \"userId\", \"type\", \"target\", \"createdAt\"];\r",
+									"\r",
+									"    // Parse the response body as JSON\r",
+									"    const responseBody = pm.response.json();\r",
+									"\r",
+									"    // Check that the response is not empty\r",
+									"    pm.expect(responseBody).to.not.be.empty;\r",
+									"\r",
+									"    // Check the presence of expected fields in each object\r",
+									"    responseBody.forEach(function (item) {\r",
+									"        expectedFields.forEach(function (field) {\r",
+									"            pm.expect(item).to.have.property(field);\r",
+									"        });\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Host}}/goals/all",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"goals",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get specific type of goals for spesific user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check status code 200\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// Check that each goal in response has expected userId and type \r",
+									"pm.test(\"Check that each step count has expected userId\", function () {\r",
+									"    // Expected user ID\r",
+									"    const expectedUserId = \"661e34c1aa109d60e8257190\";\r",
+									"    const expectedType = \"boost_energy\"\r",
+									"\r",
+									"    // Parse the response body as JSON\r",
+									"    const responseBody = pm.response.json();\r",
+									"\r",
+									"    // Check if the response body is an array and it's not empty\r",
+									"    if (Array.isArray(responseBody) && responseBody.length > 0) {\r",
+									"        // Iterate over each object in the response array\r",
+									"        responseBody.forEach(function (goal) {\r",
+									"            // Get the userId from the current object\r",
+									"           const userIdFromResponse = responseBody[0].userId;\r",
+									"           const typeFromResponse = responseBody[0].type;\r",
+									"\r",
+									"            // Compare the type from the current object with the expected type\r",
+									"            pm.expect(userIdFromResponse).to.equal(expectedUserId);\r",
+									"            pm.expect(typeFromResponse).to.equal(expectedType);\r",
+									"        });\r",
+									"    } else {\r",
+									"        console.log(\"Response body is not an array or it's empty\");\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Host}}/goals/user/661e34c1aa109d60e8257190/boost_energy",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"goals",
+								"user",
+								"661e34c1aa109d60e8257190",
+								"boost_energy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch Paginated Goals with Sorting",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check if the response status code is 200 OK\r",
+									"       pm.test(\"Status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify API returns correct data with specific filters\", function () {\r",
+									"    // Parse the response body as JSON\r",
+									"    const responseBody = pm.response.json();\r",
+									" \r",
+									"    // Check if the response contains the expected keys\r",
+									"    pm.expect(responseBody).to.have.property(\"goals\");\r",
+									"    pm.expect(responseBody).to.have.property(\"currentPage\");\r",
+									"    pm.expect(responseBody).to.have.property(\"totalPages\");\r",
+									"    pm.expect(responseBody).to.have.property(\"totalGoals\");\r",
+									"\r",
+									"    // Check if the 'goals' array has a length of 10\r",
+									"    pm.expect(responseBody.goals.length).to.equal(10);\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Host}}/goals?page=6&limit=10",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"goals"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "6"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create a new goal for a specific user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// POST request returns status code 201\r",
+									"pm.test(\"POST request returns status code 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"POST request returns the created goal\", function () {\r",
+									"   const responseBody = pm.response.json();\r",
+									"\r",
+									"    pm.expect(pm.response.json()).to.have.property(\"userId\", \"661e330bbca6df6cdde0b7dc\");\r",
+									"    pm.expect(pm.response.json()).to.have.property(\"type\", \"improve_balance\");\r",
+									"     pm.expect(pm.response.json()).to.have.property(\"target\", \"Improve yoga balance poses\");\r",
+									"    pm.expect(pm.response.json()).to.have.property(\"createdAt\", \"2023-07-04T00:16:07.218Z\"); \r",
+									"   // Capture the ID of the created activity\r",
+									"    const goalId = responseBody._id;\r",
+									"    console.log(goalId)\r",
+									"\r",
+									"\r",
+									"  // Set the captured activity ID in the environment variable\r",
+									"    pm.environment.set(\"createdGoalId\", goalId);\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"userId\": \"661e330bbca6df6cdde0b7dc\",   \r\n\"type\": \"improve_balance\",\r\n\"target\": \"Improve yoga balance poses\",\r\n\"createdAt\": \"2023-07-04T00:16:07.218Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Host}}/goals",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"goals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update a goal",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check status code\r",
+									"pm.test(\"GET request returns status code 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"target\": \"get_healthier\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Host}}/goals/{{createdGoalId}}",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"goals",
+								"{{createdGoalId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remowe Goal",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check status code\r",
+									"pm.test(\"DELETE request returns status code 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"DELETE request returns 'Goal deleted successfully.' message\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"Goal deleted successfully.\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Host}}/goals/{{createdGoalId}}",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"goals",
+								"{{createdGoalId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -132,6 +132,20 @@ export default function ( server, mongoose ) {
   // Skapar en POST-route för att lägga till en ny aktivitet
   server.post( '/api/activities', async ( req, res ) => {
     try {
+      // Kontrollerar om caloriesBurned är i rätt format
+      if ( isNaN( req.body.caloriesBurned ) ) {
+        return res.status( 400 ).json( { message: "Invalid caloriesBurned. Must be a number." } );
+      }
+
+      // Kontrollerar om caloriesBurned är i rätt format
+      if ( isNaN( req.body.duration ) ) {
+        return res.status( 400 ).json( { message: "Invalid duration. Must be a number." } );
+      }
+
+      // Kontrollerar om startTime är ett giltigt datum
+      if ( isNaN( Date.parse( req.body.startTime ) ) ) {
+        return res.status( 400 ).json( { message: "Invalid startTime. Must be a valid date." } );
+      }
       const newActivity = new Activity( {
         userId: req.body.userId,
         type: req.body.type,
@@ -139,15 +153,37 @@ export default function ( server, mongoose ) {
         duration: req.body.duration,
         caloriesBurned: req.body.caloriesBurned,
         createdAt: req.body.createdAt
+      } ); // Skapar en ny aktivitet från request body.
 
-      } ) // Skapar en ny aktivitet från request body.
-      const savedActivity = await newActivity.save() // Sparar den nya aktiviteten i databasen.
+      const savedActivity = await newActivity.save(); // Sparar den nya aktiviteten i databasen.
+
       res.status( 201 ).json( savedActivity ); // Skickar tillbaka den sparade aktiviteten som JSON.
     } catch ( error ) {
       console.error( error );
       res.status( 500 ).json( { message: "Ett fel uppstod på servern vid skapande av ny aktivitet." } );
     }
   } );
+
+
+  // // Skapar en POST-route för att lägga till en ny aktivitet
+  // server.post( '/api/activities', async ( req, res ) => {
+  //   try {
+  //     const newActivity = new Activity( {
+  //       userId: req.body.userId,
+  //       type: req.body.type,
+  //       startTime: req.body.startTime,
+  //       duration: req.body.duration,
+  //       caloriesBurned: req.body.caloriesBurned,
+  //       createdAt: req.body.createdAt
+
+  //     } ) // Skapar en ny aktivitet från request body.
+  //     const savedActivity = await newActivity.save() // Sparar den nya aktiviteten i databasen.
+  //     res.status( 201 ).json( savedActivity ); // Skickar tillbaka den sparade aktiviteten som JSON.
+  //   } catch ( error ) {
+  //     console.error( error );
+  //     res.status( 500 ).json( { message: "Ett fel uppstod på servern vid skapande av ny aktivitet." } );
+  //   }
+  // } );
 
   // Skapar en PUT-route för att uppdatera en aktivitet med ett specifikt ID.
   server.put( '/api/activities/:id', async ( req, res ) => {
@@ -174,7 +210,7 @@ export default function ( server, mongoose ) {
       if ( !deletedActivity ) {
         return res.status( 404 ).json( { message: "Aktivitet hittades inte" } );
       }
-      res.json( { message: "Aktiviteten har raderats!" } ); // Bekräftelse på att boken har raderats.
+      res.json( { message: "Activity deleted successfully." } ); // Bekräftelse på att boken har raderats.
     } catch ( error ) {
       console.error( error );
       res.status( 500 ).json( { message: "Ett fel uppstod på servern vid radering av aktiviteten." } );

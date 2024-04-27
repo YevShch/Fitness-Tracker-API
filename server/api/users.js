@@ -177,42 +177,37 @@ export default function ( server, mongoose ) {
   } );
 
 
-  // Skapar en POST-route för att lägga till en ny användare
+  // Create a POST route to add a new user
   server.post( '/api/users', async ( req, res ) => {
     try {
-      if ( req.query.disconnect === "true" ) {
-        if ( isConnected ) {
-          await mongoose.disconnect();
-          isConnected = false;
-        }
-      } else {
-        if ( !isConnected ) {
-          // Reconnect
-          await mongoose.connect( "mongodb+srv://yevheniiashcherbakova82:Max260822@cluster0.pnwopeg.mongodb.net/Fitness-Tracker" );
-          isConnected = true;
-        }
+      // Check for the presence of required parameters
+      const requiredFields = [ 'username', 'email', 'password' ];
+      const missingFields = requiredFields.filter( field => !req.body.hasOwnProperty( field ) );
+
+      if ( missingFields.length > 0 ) {
+        return res.status( 400 ).json( { message: `Missing required field(s): ${ missingFields.join( ', ' ) }` } );
       }
-      //Check the email format 
+
+      // Check email format
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       const isValidEmail = emailRegex.test( req.body.email );
       if ( !isValidEmail ) {
         return res.status( 400 ).json( { message: "Invalid email format" } );
       }
 
-      // Kollar om användare med visst email existerar
+      // Check for an existing user with the specified email
       const existingEmail = await User.findOne( { email: req.body.email } );
-
       if ( existingEmail ) {
         return res.status( 400 ).json( { message: 'Email already exists' } );
       }
 
-      // Kollar om användare med visst username existerar
+      // Check for an existing user with the specified username
       const existingUsername = await User.findOne( { username: req.body.username } );
       if ( existingUsername ) {
         return res.status( 400 ).json( { message: 'Username already exists' } );
       }
 
-      // Skapar en ny användare
+      // Create a new user
       const newUser = new User( {
         username: req.body.username,
         email: req.body.email,
@@ -222,13 +217,12 @@ export default function ( server, mongoose ) {
 
       const savedUser = await newUser.save();
 
-      res.status( 201 ).json( savedUser ); // Spapar användare i json-format
+      res.status( 201 ).json( savedUser ); // Create user in JSON format
     } catch ( error ) {
       console.error( error );
       res.status( 500 ).json( { message: 'An error occurred on the server while creating a new user', error: error.message } );
     }
   } );
-
 
   // Skapar en PUT-route för att uppdatera en användare med ett specifikt ID.
   server.put( '/api/users/:id', async ( req, res ) => {

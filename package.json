@@ -17,6 +17,8 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
-    "bcrypt": "^5.1.1"
+    "bcrypt": "^5.1.1",
+    "loadtest": "^8.0.9",
+    "newman": "^6.1.2"
   }
 }

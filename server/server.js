@@ -1,8 +1,8 @@
 // Importera Express för att kunna skapa en webbserver och Mongoose för att interagera med MongoDB-databasen.
-import express from "express"
-import mongoose from "mongoose"
-import apiRegister from "./api-register.js"
-
+import express from "express";
+import mongoose from "mongoose";
+import apiRegister from "./api-register.js";
+import rateLimit from "express-rate-limit";
 // Skapar en instans av Express-appen, detta är vår webbserver.
 const server = express()
 
@@ -22,6 +22,15 @@ server.use( ( req, res, next ) => {
   next();
 } );
 
+server.use( express.json() )
+
+const limiter = rateLimit( {
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: "Too many request from this IP, please try again in an 15 minutes."
+} );
+
+server.use( "/api", limiter );
 /* 
   Vår MongoDB Atlas connection-string
   Ansluter till MongoDB-databasen med hjälp av Mongoose.

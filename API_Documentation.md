@@ -1,5 +1,5 @@
-# Fitness Tracker API Guide :spiral_notepad:
-:muscle: :running: :biking_man: :dancer: :athletic_shoe:
+# Fitness Tracker API Guide :muscle: :running: :biking_man: :dancer: :athletic_shoe:
+
 ## Description
 The Fitness Tracker API allows users to track their activities, step counts, and set goals to achieve fitness targets. It provides endpoints to manage user accounts, record activities, monitor step counts, and set goals. With this API, developers can build applications to help users stay fit and achieve their fitness goals.
 

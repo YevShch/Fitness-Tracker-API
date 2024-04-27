@@ -160,7 +160,7 @@ export default function ( server, mongoose ) {
       if ( !deletedGoal ) {
         return res.status( 404 ).json( { message: "Målet hittades inte" } );
       }
-      res.json( { message: "Målet har raderats!" } ); // Bekräftelse på att boken har raderats.
+      res.json( { message: "Goal deleted successfully." } ); // Bekräftelse på att boken har raderats.
     } catch ( error ) {
       console.error( error );
       res.status( 500 ).json( { message: "Ett fel uppstod på servern vid radering av måll." } );

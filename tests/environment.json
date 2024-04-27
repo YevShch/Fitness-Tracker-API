@@ -1,0 +1,81 @@
+{
+	"id": "c134afa8-911a-452d-bae2-c7bf63ae73dc",
+	"name": "Fitness-Tracker",
+	"values": [
+		{
+			"key": "Host",
+			"value": "http://localhost:3000/api",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "userIdToDelete",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "initialDataLength",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "userIdToUpdate",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "initialUsername",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "firstUserId",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "userId",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "updatedUsername",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "createdUserId",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "createdActivityId",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "createdStepCountId",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "createdGoalId",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2024-04-27T08:14:31.384Z",
+	"_postman_exported_using": "Postman/10.24.24"
+}
