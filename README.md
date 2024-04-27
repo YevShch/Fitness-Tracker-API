@@ -89,10 +89,14 @@ Ensure that the format and structure of the connection string remain the same.
 npm install express-rate-limit
 ```
 
-Following these steps will successfully set up your API and populate your database with mock data. :satellite:
-
 17. **Load testing:** To perform load testing for your application, you can use the loadtest package. Install it as a development dependency by running the following command in your terminal: 
 ```bash
 npm install loadtest --save-dev
 ```
 This will allow you to execute load tests to evaluate your server's performance under heavy load. 
+18.**Automated Testing:** To conduct API testing directly from Postman collections, you can leverage Newman, a command-line collection runner for Postman. Install Newman globally on your system by running the following command:
+```bash
+npm install newman --save-dev
+```
+
+Following these steps will successfully set up your API and populate your database with mock data. :satellite:
