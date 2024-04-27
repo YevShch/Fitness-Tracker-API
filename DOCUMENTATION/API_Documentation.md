@@ -74,7 +74,7 @@ Retrieve information about activities.
 - **minMinutes:** The minimum duration of the activity in minutes.
 - **maxMinutes:** The maximum duration of the activity in minutes.
 
-## /users endpoints bust_in_silhouette::muscle:
+## /users endpoints :bust_in_silhouette::muscle:
 Retrieve information about users.
 -  `GET /users/all` Retrieve all users.
 - `GET /users?page={pageNumber}&limit={limitNumber}` Retrieve users with pagination.

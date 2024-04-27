@@ -1,13 +1,13 @@
 # Fitness Tracker API :bicyclist:
- This project serves as a school assignment for the development and testing of the API, aimed at utilizing MongoDB, mongoose, fakerjs.dev, and a server.
+ This project serves as a school assignment for the development and testing of the API, aimed at utilizing MongoDB, mongoose, server and fakerjs.
  
  Additionally, the project focuses on API testing, featuring a Postman collection for testing purposes. You can access the Postman collection and documentation for API testing at the following links:
 
-- **API Testing Documentation** [API Manual Testing Documentation](https://github.com/YevShch/Fitness-Tracker/blob/main/API_Testing_Documentation.md) and [API Automated Testing Documentation](https://github.com/YevShch/Fitness-Tracker/blob/main/API_AUTO_Testing_Documentation.md)  
+- **API Testing Documentation** [API Manual Testing Documentation](https://github.com/YevShch/Fitness-Tracker/blob/main/DOCUMENTATION/API_Manual_Testing_Documentation.md) and [API Automated Testing Documentation](https://github.com/YevShch/Fitness-Tracker/blob/main/DOCUMENTATION/API_AUTO_Testing_Documentation.md)  
 
 - **Postman Collection** [Postman Collection](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/collection/33841208-94536aae-954b-41dd-a659-31841f79e949?action=share&creator=33841208)
 
-- For comprehensive details on how to use the API, refer to the **API documentation** available at the following link: [API Documentation](https://github.com/YevShch/Fitness-Tracker/blob/main/API_Documentation.md)
+- For comprehensive details on how to use the API, refer to the **API documentation** available at the following link: [API Documentation](https://github.com/YevShch/Fitness-Tracker/blob/main/DOCUMENTATION/API_Documentation.md)
 
 ## API Installation Guide
 

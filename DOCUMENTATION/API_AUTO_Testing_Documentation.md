@@ -179,7 +179,7 @@ Responses: [
 ```
 #### Test Notes
 - Test Name: Test API Response with Concurrent Requests
-- Location: /FITNESS-TRACKER/tests/parallelRequests.js [Automated Test #7]()
+- Location: /FITNESS-TRACKER/tests/parallelRequests.js [Automated Test #7](https://github.com/YevShch/Fitness-Tracker/blob/main/tests/parallelRequests.js)
 
 
 ### Test 8: Test API Handling of Different HTTP Methods
@@ -238,7 +238,7 @@ For each HTTP method and endpoint:
 ```
 #### Test Notes
 - Test Name: Test API Handling of Different HTTP Methods
-- Location: 8A. API Endpoints Validation [Automated Test #8 Postman collection](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/collection/33841208-a47d322d-e3f0-417a-8726-c4d1983d80e0) [Automated Test #8 8A_Endpoints_validation.json]()
+- Location: 8A. API Endpoints Validation [Automated Test #8 Postman collection](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/collection/33841208-a47d322d-e3f0-417a-8726-c4d1983d80e0) [8A_Endpoints_validation.json GitHub](https://github.com/YevShch/Fitness-Tracker/blob/main/tests/8A_Endpoints_validation.json)
 
 
 ### Test 9: Test API Handling of Record Updates
@@ -398,7 +398,7 @@ All request returnes the appropriate error message
  ```
 #### Test Notes
 - Test Name: 12A_Edge_Cases
-- Location: 12A_Edge_Cases [Automated Test #12](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/collection/33841208-9d61ac49-294e-4548-8e00-eec07242603b)
+- Location: 12A_Edge_Cases [Automated Test #12 Postman](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/collection/33841208-9d61ac49-294e-4548-8e00-eec07242603b), [12A_Edge_Cases.json Github](https://github.com/YevShch/Fitness-Tracker/blob/main/tests/12A_Edge_Cases.json)
 
 
 ### Test 13: Verify API Rate Limiting
