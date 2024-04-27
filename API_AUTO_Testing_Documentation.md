@@ -2,28 +2,28 @@
 Access the Postman collection for API testing at the following link: [Postman Collection](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/collection/33841208-94536aae-954b-41dd-a659-31841f79e949?action=share&creator=33841208)
 
 ### Test 1: Verify HTTP Status Code for GET Request
-**Purpose**
+#### Purpose
 To ensure that the API returns the correct HTTP status code (e.g., 200 OK) for a successful GET request.
- **Steps:**
+ #### Steps:
 1. Send a GET request to `http://localhost:3000/api/activities`.
- **Expected Result**
+2. #### Expected Result
 Status code: 200 OK
-** Actual Result**
+#### Actual Result
 Status code: 200 OK
-**Test Notes**
+#### Test Notes
 - Test Name: 1A. HTTP Status Code Validation
 - Location: /Automated  [Automated Test #1](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/request/33841208-6b9cabff-f43b-4aeb-a6af-53b8ce06baea?tab=tests)
 
 
 ### Test 2. Verify API Response Data Format for JSON
-**Purpose**
+#### Purpose
 Confirm that the API returns data in the expected format.
-**Steps to Test**
+#### Steps to Test
 1. Send a GET request to `http://localhost:3000/api/activities/661e330cbca6df6cdde0b7e5` 
 and check if the response format matches the expected format JSON.
-**Expected Result**
+#### Expected Result
 The response data shoud be formatted as JSON.
-**Actual Result**
+#### Actual Result
 The response data is formatted as JSON.
 ```json
 {
@@ -37,27 +37,27 @@ The response data is formatted as JSON.
     "__v": 0
 }
 ```
-**Test Notes**
+#### Test Notes
 - Test Name: 2A. Data Format Validation
 - Location: /Automated Tests [Automated Test #2](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/request/33841208-f112ac8e-e839-48b6-981c-459b4e1d849a?tab=tests) 
 
 
 ### Test 3: Verify Correct HTTP Status Code for Invalid Request
-**Purpose**
+#### Purpose
 To ensure that the API returns the correct HTTP status code for an invalid request.
-**Steps:**
+#### Steps:
 1. Send an invalid request to `http://localhost:3000/api/users/username/invalid_username`
 2. Inspect the response to verify the returned HTTP status code.
-**Expected Result**
+#### Expected Result
 The API should return status code 404 Not found.
-**Actual Result**
+#### Actual Result
 The API returns status code 404 Not found.
 ```json
 {
     "message": "User - invalid_username not found"
 }
 ```
-**Test Notes**
+#### Test Notes
 - Test Name: 3A. Verify Correct HTTP Status Code for Invalid Requests
 - Location: /Automated Tests [Automated Test #3](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/request/33841208-fa491968-6cf3-4820-b59d-e8a55f6da8ef?tab=tests)
 
