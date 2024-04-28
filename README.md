@@ -95,7 +95,7 @@ npm install loadtest --save-dev
 ```
 This will allow you to execute load tests to evaluate your server's performance under heavy load. 
 
-18. **Automated Testing:** To conduct API testing directly from Postman collections, you can leverage Newman, a command-line collection runner for Postman. Install Newman globally on your system by running the following command:
+18. **Automated Testing:** To conduct API testing directly from Postman collections, you can leverage Newman, a command-line collection runner for Postman. Install Newman locally on your system by running the following command:
 ```bash
 npm install newman --save-dev
 ```
