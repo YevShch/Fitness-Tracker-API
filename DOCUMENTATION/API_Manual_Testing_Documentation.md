@@ -5,20 +5,20 @@ Access the Postman collection for API testing at the following link: [Postman Co
 #### Purpose
 To ensure that the API returns the correct HTTP status code (e.g., 200 OK) for a successful GET request.
 #### Steps:
-1. Send a GET request to `/api/activities`.
+1. Send a GET request to `http://localhost:3000/api/activities`.
 #### Expected Result
 Status code should be: 200 OK
 #### Actual Result
 Status code: 200 OK
 #### Test Notes
 - Test Name: Verify HTTP Status Code for GET Request
-- Location: /Manual tests 
+- Location: /Manual tests [ Verify HTTP Status Code for GET Request](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/request/33841208-4acfd850-7917-4d0f-8309-946f443619ad)
 
 ### Manual Test 2. Verify API Response Data Format for JSON
 #### Objective
 Confirm that the API returns data in the expected format.
 #### Steps to Test
-1. Send a GET request to `/api/stepCounts/661e330dbca6df6cdde0b7ff` 
+1. Send a GET request to `http://localhost:3000/api/stepCounts/661e330dbca6df6cdde0b7ff` 
 and check if the response format matches the expected format JSON.
 #### Expected Result
 The response data should be formatted as JSON.
@@ -35,13 +35,13 @@ The response data is formatted as JSON.
 ```
 #### Test Notes
 - Test Name: Verify API Response Data Format for JSON
-- Location: /Manual tests  
+- Location: /Manual tests [Verify API Response Data Format for JSON](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/request/33841208-2cffdeed-e3e6-4374-922c-0f0c7b6cdf62) 
 
 ### Manual Test 3: Verify Correct HTTP Status Code for Invalid Request
 #### Purpose
 To ensure that the API returns the correct HTTP status code (e.g., 400 Bad Request) for an invalid request.
 #### Steps:
-1. Send an invalid request to `/api/stepCounts/invalid_id`
+1. Send an invalid request to `http://localhost:3000/api/stepCounts/invalid_id`
 2. Inspect the response to verify the returned HTTP status code.
 #### Expected Result
 The API should return a status code of 400 Bad Request
@@ -54,13 +54,13 @@ The API returns status code 400 Bad Request.
 ```
 #### Test Notes
 - Test Name: Verify Correct HTTP Status Code for Invalid Request
-- Location: /Manual tests 
+- Location: /Manual tests [Verify Correct HTTP Status Code for Invalid Request](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/request/33841208-430255cf-e27e-44fa-b5bc-ca0373afb888)
 
 ### Manual Test 4: Test API with Specific Filters
 #### Purpose
 To verify that the API returns the correct data when querying with specific filters or search criteria.
 #### Steps:
-1. Send a GET request to the endpoint `api/activities` with specific filters included in the query parameters.
+1. Send a GET request to the endpoint `http://localhost:3000/api/activities` with specific filters included in the query parameters.
    - Example: `api/activities?userId=661e34c0aa109d60e825718c&minMinutes=20&maxMinutes=101`
 #### Expected Result
 The API should return activities that match the specified criteria:
@@ -71,7 +71,7 @@ The API should return activities that match the specified criteria:
 - The response contains activities where the user ID matches '661e34c0aa109d60e825718c' and the duration falls within the specified range.
 #### Test Notes
 - Test Name: Test API with Specific Filters
-- Location: /Manual Tests
+- Location: /Manual Tests [Test API with Specific Filters](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/request/33841208-9f38c366-35d1-42ba-8cff-31d60b118cd4)
 
 ### Manual Test 5: Verify API Pagination
 #### Purpose
@@ -88,13 +88,13 @@ The API returns paginated results according to the specified pagination paramete
 - Page 2 of the results is returned, with 5 records per page.
 #### Test Notes
 - Test Name: Verify API Pagination
-- Location: /Manual Tests
+- Location: /Manual Tests [Verify API Pagination](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/request/33841208-cd006d42-31cb-426e-bc83-2962c935955e)
 
 ### Manual Test 6: Check API Handling of Special Characters and Non-English Text
 #### Purpose
 To verify that the API correctly handles special characters and non-English text in input data.
 #### Steps:
-1. Send a PUT request to the endpoint `/api/goals/661e34c6aa109d60e8257260` with input data containing special characters and non-English text.
+1. Send a PUT request to the endpoint `http://localhost:3000/api/goals/661e34c6aa109d60e8257260` with input data containing special characters and non-English text.
    - Example body:
      ```json
      {
@@ -112,17 +112,17 @@ The API should handle the input data containing special characters and non-Engli
 - The 'target' field is updated with the provided value containing special characters.
 #### Test Notes
 - Test Name: Handling of Special Characters and Non-English Text
-- Location: /Manual Tests
+- Location: /Manual Tests [Handling of Special Characters and Non-English Text](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/request/33841208-59f64e7a-17b8-4da3-b3dc-208089a14527)
 
 ### Manual Test 7: Test API Response with Concurrent Requests
 #### Purpose
 To ensure that the API can handle multiple users and maintain data consistency when receiving concurrent requests.
 #### Steps:
-1. Send multiple concurrent requests to the API endpoints that involve data manipulation (e.g., creating, updating, deleting).
+1. Open multiple tabs in Postman and send requests simultaneously, 5 requests per URL
    - Example requests:
-     - POST request to create a new user: `POST /api/users`
-     - PUT request to update an existing user: `PUT /api/users/{userId}`
-     - DELETE request to delete a user: `DELETE /api/users/{userId}`
+     - POST request to create a new activity: `http://localhost:3000/api/activities`
+     - PUT request to update an existing goal: `http://localhost:3000/api/goals/661e34c6aa109d60e8257258`
+     - GET request to fetch all goals: `http://localhost:3000/api/goals`
 #### Expected Result
 The API should handle the concurrent requests gracefully and maintain data consistency. Specifically:
 - Requests should be processed concurrently without data corruption or loss.
@@ -132,7 +132,7 @@ The API should handle the concurrent requests gracefully and maintain data consi
 - Data remains consistent across all requests, with no unexpected changes.
 #### Test Notes
 - Test Name: Test API Response with Concurrent Requests
-- Location: /Manual Tests/Concurrent Requests
+- Location: /Manual Tests/[Concurrent Requests](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/folder/33841208-9be7b922-4a35-4707-8a1a-8a2209e304e3)
 
 ### Manual Test 8: Test API Handling of Different HTTP Methods
 #### Purpose
@@ -156,7 +156,7 @@ For each HTTP method and endpoint:
 - DELETE: The API successfully deletes resources and returns status codes 200.
 #### Test Notes
 - Test Name: Test API Handling of Different HTTP Methods
-- Location: /Manual Tests/HTTP Methods Handling
+- Location: /Manual Tests/HTTP Methods Handling[Test API Handling of Different HTTP Methods](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/folder/33841208-b4e848e9-0e40-4b67-a73e-6a9c3b165389)
 
 ### Manual Test 9: Test API Handling of Record Updates
 
@@ -193,14 +193,14 @@ The API successfully updated the existing record, and the changes were reflected
  ```
 #### Test Notes
 - Test Name: Test API Handling of Record Updates
-- Location: /Manual Tests/Record Updates Handling
+- Location: /Manual Tests/[Record Updates Handling ](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/folder/33841208-0bec45b9-4143-4d3b-8210-242180283512)
 
 ### Manual Test 10: Test API Performance Under Heavy Load
 #### Purpose
 Test the API’s performance under heavy load, simulating a large number of users making requests simultaneously.
 #### Steps:
 1. Create a collection with multiple GET requests.
-2. Run the collection with 100 iterations.
+2. Run the collection with 100 iterations in the Postman Runner.
 #### Expected Result
 The API should perform well under heavy load.
 #### Actual Result
@@ -212,14 +212,14 @@ The API should perform well under heavy load.
 - Duration: 1 minute 19 seconds 
 #### Test Notes
 - Test Name: Test API Performance Under Heavy Load
-- Location: /Manual Tests/Test API Performance
+- Location: /Manual Tests/[Test API Performance](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/folder/33841208-0ef4e86c-27bd-465d-a3f3-56c3d7e8a09a)
 
 ### Manual Testing 11: Verify API Recovery from Failures
 #### Purpose
 To verify that the API can recover gracefully from failures, such as database connection issues, without compromising data integrity.
 #### Steps:
 1. Introduce a simulated database connection issue (stop the database service).
-2. Send a request to the API endpoint that requires database access - `/api/stepCounts/661e330dbca6df6cdde0b803`
+2. Send a request to the API endpoint that requires database access - `http://localhost:3000/api/stepCounts/661e330dbca6df6cdde0b803`
 3. Observe the API's response.
 #### Expected Result
 The API should handle the database connection issue gracefully, returning an appropriate error response without compromising data integrity.
@@ -228,17 +228,25 @@ The API should handle the database connection issue gracefully, returning an app
 - Data integrity was maintained; no data corruption or loss occurred.
 #### Test Notes
 - Test Name: Verify API Recovery from Failures
-- Location: /Manual Tests
+- Location: /Manual Tests [Disconnect](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/request/33841208-62e2b2ec-e172-47f4-bddd-3cf11ac0b05a)
 
 ### Manual Test 12: Test the API’s ability to handle edge cases
 #### Purpose
 To verify that the API handles edge cases, such as requests with missing or invalid parameters, and returns appropriate error messages.
 #### Steps:
-1. Send a POST request to `/api/users` with missing `username` parameter.
-2. Send a POST request to `/api/users` with missing `email` parameter.
-3. Send a POST request to `/api/users` with missing `password` parameter.
-4. Send a POST request to `/api/users` with invalid email format.
-5. Send a POST request to `/api/users` with a duplicate email value.
+1. Send a POST request to `http://localhost:3000/api/users` with missing `username` parameter.
+  Example body request:
+```json
+{
+"email": "fytrudk@gmail.com",
+"password": "ctb725RfgdRfLlNMD",
+"createdAt": "2024-03-20T20:18:36.823Z"
+}
+```
+2. Send a POST request to `http://localhost:3000/api/users` with missing `email` parameter.
+3. Send a POST request to `http://localhost:3000/api/users` with missing `password` parameter.
+4. Send a POST request to `http://localhost:3000/api/users` with invalid email format.
+5. Send a POST request to `http://localhost:3000/api/users` with a duplicate email value.
 
 #### Expected Result
 Each request should return the appropriate error message for the specific edge case.
@@ -276,13 +284,13 @@ Each request should return the appropriate error message for the specific edge c
  ```
 #### Test Notes
 - Test Name: Verify API Rate Limiting
-- Location: /Manual Tests/Edge cases
+- Location: /Manual Tests/[Edge cases](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/folder/33841208-6442b464-a167-4925-adfc-6f3d6df8a8fd)
 
 ### Manual Test 13: Verify API Rate Limiting
 #### Purpose
-To ensure that the API correctly implements rate limiting or throttling mechanisms to prevent abuse or excessive use of resources.
+To ensure that the API correctly implements rate limiting to prevent abuse or excessive use of resources.
 #### Steps:
-1. Send multiple requests to an endpoint within a short time frame.
+1. Send multiple requests to an endpoint within a short time frame - `http://localhost:3000/api/users/username/Natasha11`
 2. Observe the API's response to each request.
 #### Expected Result
 The API should limit the number of requests allowed within the specified time frame and return an appropriate error response (e.g., status code 429 - Too Many Requests) when the limit is exceeded.
@@ -291,5 +299,5 @@ The API should limit the number of requests allowed within the specified time fr
 - The API prevented abuse or excessive use of resources effectively.
 #### Test Notes
 - Test Name: Verify API Rate Limiting
-- Location: /Manual Tests/API Rate Limiting
+- Location: /Manual Tests/[API Rate Limiting Test](https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/request/33841208-e5442f64-3cfb-4910-97b2-0f150b248db2)
 
