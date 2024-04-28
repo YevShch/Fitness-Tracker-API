@@ -46,15 +46,15 @@ The response data is formatted as JSON.
 #### Purpose
 To ensure that the API returns the correct HTTP status code for an invalid request.
 #### Steps:
-1. Send an invalid request to `http://localhost:3000/api/users/username/invalid_username`
+1. Send an invalid request to `http://localhost:3000/api/users/createdAt/lalala`
 2. Inspect the response to verify the returned HTTP status code.
 #### Expected Result
-The API should return status code 404 Not found.
+The API should return status code 400 Bad Request.
 #### Actual Result
-The API returns status code 404 Not found.
+The API returns status code 400 Bad Request
 ```json
 {
-    "message": "User - invalid_username not found"
+    "message": "Invalid date format. Use YYYY-MM-DD format."
 }
 ```
 #### Test Notes
@@ -153,18 +153,17 @@ To ensure that the API can handle multiple users and maintain data consistency w
 ```bash
 node parallelRequests.js.
 ```
-4. Monitor the terminal for any errors or messages.
-5. Ensure that the script is connected to the local server running on localhost:3000.
-6. Observe the responses logged in the terminal.
+4. The script sends five parallel POST requests to the API endpoint `http://localhost:3000/api/goals`.
+   Each request contain data to create a goal for the same user with the provided details: userId, type, target, and createdAt.
+5. Monitor the terminal for any errors or messages.
+6. Ensure that the script is connected to the local server running on localhost:3000.
+7. Observe the responses logged in the terminal.
 #### Expected Result
-- The script sends five parallel POST requests to the API endpoint /api/goals.
-- Each request contains data to create a goal for the same user with the provided details: userId, type, target, and createdAt.
-- The API successfully handles the concurrent requests without errors.
-- All requests result in successful responses from the API, indicating that the goals were created.
-- Each response contains information about the created goal, including userId, type, target, createdAt, and other relevant fields.
-- The responses demonstrate that the API maintains data consistency and accurately creates goals for the specified user.
+- The API should successfully handle the concurrent requests without errors.
+- All requests should result in successful responses from the API, indicating that the goals were created.
+- Each response should contain information about the created goal, including userId, type, target, createdAt, and other relevant fields.
 #### Actual Result
--The test script successfully sent five parallel requests to the API.
+- The test script successfully sent five parallel requests to the API.
 - Each request received a response from the API.
 - The responses contain information about the created goals, including userId, type, target, and createdAt.
 - Data consistency was maintained across all responses, indicating that the API handled multiple concurrent requests effectively.
@@ -179,7 +178,7 @@ Responses: [
 ```
 #### Test Notes
 - Test Name: Test API Response with Concurrent Requests
-- Location: /FITNESS-TRACKER/tests/parallelRequests.js [Automated Test #7](https://github.com/YevShch/Fitness-Tracker/blob/main/tests/parallelRequests.js)
+- Location: /FITNESS-TRACKER/tests/parallelRequests.js [parallelRequests.js](https://github.com/YevShch/Fitness-Tracker/blob/main/tests/parallelRequests.js)
 
 
 ### Test 8: Test API Handling of Different HTTP Methods
@@ -189,11 +188,11 @@ To verify that the API correctly handles different HTTP methods (GET, POST, PUT,
 1. Create a collection in Postman to contain the tests for verifying API responses.
    Include tests for sending GET, POST, PUT, and DELETE requests to each endpoint.
 2. Export Collection and Environment:
-3. Export the collection containing the verification tests from Postman.
-4. Export the corresponding environment from Postman.
-5. Open terminal in your Visual Studio Code environment.
-6. Navigate to the directory containing the parallelRequests.js file.
-7. Run Tests with Newman:
+- Export the collection containing the verification tests from Postman.
+- Export the corresponding environment from Postman.
+3. Open terminal in your Visual Studio Code environment.
+4. Navigate to the directory containing the 8A_Endpoints_validation.json file containing the exported collection from PostMan.
+5. Run Tests with Newman:
 - Install Newman using the following command if it is not already installed:
 ```bash
  - npm install newman --save-dev
@@ -405,7 +404,7 @@ All request returnes the appropriate error message
 #### Purpose
 To ensure that the API correctly implements rate limiting to prevent abuse or excessive use of resources.
 #### Steps:
-1. Create a test that will send 101 GET requests one by one to `http://localhost:3000/api/activitie`
+1. Run the test that send 101 GET requests one by one to `http://localhost:3000/api/activitie`
 2. Verify that the API correctly implements rate limiting.
 - Expect a status code of 200 for the first 100 requests.
 - Expect a status code of 429 and the error message "Too many requests from this IP, please try again in 15 minutes." for the 101st request.

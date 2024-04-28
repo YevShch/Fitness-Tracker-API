@@ -11,7 +11,7 @@ export default function ( server, mongoose ) {
       res.status( 200 ).json( activities );
     } catch ( error ) {
       console.error( error ); 
-      res.status( 500 ).json( { message: "Ett fel inträffade", error } );
+      res.status( 500 ).json( { message: "An error occurred on the server", error } );
     }
   } );
 
@@ -44,12 +44,12 @@ export default function ( server, mongoose ) {
         query.userId = userId;
       }
 
+
       // Om byType är definierat, lägg till en sökning för delar av aktivitetstypen
       if ( byType !== "" ) {
         query.type = { $regex: byType, $options: "i" };
       }
 
-      
       // Filter by minimum number of minutes
       if ( !isNaN( minMinutes ) ) {
         query.duration = { $gte: minMinutes };
@@ -113,31 +113,40 @@ export default function ( server, mongoose ) {
       } );
     } catch ( error ) {
       console.error( error );
-      res.status( 500 ).json( { message: "Ett fel inträffade", error } );
+      res.status( 500 ).json( { message: "An error occurred on the server", error } );
     }
   } );  
+
+
   // Skapar en GET-route för att hämta en specifik aktivitet med ID
   server.get( '/api/activities/:id', async ( req, res ) => {
     try {
-      const activity = await Activity.findById( req.params.id ); // Hämtar aktiviteten med ID från databasen.
+      const activity = await Activity.findById( req.params.id ); 
       if ( !activity ) {
-        return res.status( 404 ).json( { message: "Aktivitet hittades inte" } );
+        return res.status( 404 ).json( { message: "Activity not found" } );
       }
       res.json( activity );
     } catch ( error ) {
-      res.status( 500 ).json( { message: "Ett fel uppstod på servern vid hämtning av en aktivitet." } );
+      res.status( 500 ).json( { message: 'An error occurred on the server while fetching an activity' } );
     }
   } );
 
   // Skapar en POST-route för att lägga till en ny aktivitet
   server.post( '/api/activities', async ( req, res ) => {
     try {
+      // Check for the presence of required parameters
+      const requiredFields = [ 'userId', 'type', 'startTime', 'duration', 'caloriesBurned', 'createdAt' ];
+      const missingFields = requiredFields.filter( field => !req.body.hasOwnProperty( field ) );
+
+      if ( missingFields.length > 0 ) {
+        return res.status( 400 ).json( { message: `Missing required field(s): ${ missingFields.join( ', ' ) }` } );
+      }
       // Kontrollerar om caloriesBurned är i rätt format
       if ( isNaN( req.body.caloriesBurned ) ) {
         return res.status( 400 ).json( { message: "Invalid caloriesBurned. Must be a number." } );
       }
 
-      // Kontrollerar om caloriesBurned är i rätt format
+      // Kontrollerar om duration är i rätt format
       if ( isNaN( req.body.duration ) ) {
         return res.status( 400 ).json( { message: "Invalid duration. Must be a number." } );
       }
@@ -160,30 +169,10 @@ export default function ( server, mongoose ) {
       res.status( 201 ).json( savedActivity ); // Skickar tillbaka den sparade aktiviteten som JSON.
     } catch ( error ) {
       console.error( error );
-      res.status( 500 ).json( { message: "Ett fel uppstod på servern vid skapande av ny aktivitet." } );
+      res.status( 500 ).json( { message: 'An error occurred on the server while creating new activity' } );
     }
   } );
 
-
-  // // Skapar en POST-route för att lägga till en ny aktivitet
-  // server.post( '/api/activities', async ( req, res ) => {
-  //   try {
-  //     const newActivity = new Activity( {
-  //       userId: req.body.userId,
-  //       type: req.body.type,
-  //       startTime: req.body.startTime,
-  //       duration: req.body.duration,
-  //       caloriesBurned: req.body.caloriesBurned,
-  //       createdAt: req.body.createdAt
-
-  //     } ) // Skapar en ny aktivitet från request body.
-  //     const savedActivity = await newActivity.save() // Sparar den nya aktiviteten i databasen.
-  //     res.status( 201 ).json( savedActivity ); // Skickar tillbaka den sparade aktiviteten som JSON.
-  //   } catch ( error ) {
-  //     console.error( error );
-  //     res.status( 500 ).json( { message: "Ett fel uppstod på servern vid skapande av ny aktivitet." } );
-  //   }
-  // } );
 
   // Skapar en PUT-route för att uppdatera en aktivitet med ett specifikt ID.
   server.put( '/api/activities/:id', async ( req, res ) => {
@@ -199,7 +188,7 @@ export default function ( server, mongoose ) {
       res.json( updatedActivity );
     } catch ( error ) {
       console.error( error );
-      res.status( 500 ).json( { message: 'Ett fel uppstod på servern vid uppdatering av bok.' } );
+      res.status( 500 ).json( { message: 'An error occurred on the server while updating an activity' } );
     }
   } );
 
@@ -208,12 +197,12 @@ export default function ( server, mongoose ) {
     try {
       const deletedActivity = await Activity.findByIdAndDelete( req.params.id );
       if ( !deletedActivity ) {
-        return res.status( 404 ).json( { message: "Aktivitet hittades inte" } );
+        return res.status( 404 ).json( { message: "Activity not found" } );
       }
       res.json( { message: "Activity deleted successfully." } ); // Bekräftelse på att boken har raderats.
     } catch ( error ) {
       console.error( error );
-      res.status( 500 ).json( { message: "Ett fel uppstod på servern vid radering av aktiviteten." } );
+      res.status( 500 ).json( { message: "An error occurred on the server while removing activity" } );
     }
   } );
 

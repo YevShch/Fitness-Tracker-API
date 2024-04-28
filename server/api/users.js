@@ -20,7 +20,6 @@ export default function ( server, mongoose ) {
           isConnected = true;
         }
       }
-
       const users = await User.find();
       if ( users.length === 0 ) {
         return res.status( 404 ).json( { message: 'User not found' } );
@@ -32,11 +31,18 @@ export default function ( server, mongoose ) {
     }
   } );
 
-  // GET route for paginated and sorted users
-  server.get( '/api/users', async ( req, res ) => {
+
+  // // GET route for paginated and sorted users
+   server.get( '/api/users', async ( req, res ) => {
     try {
-      const page = parseInt( req.query.page ) || 1; // current page
-      const limit = parseInt( req.query.limit ) || 10; // items per page
+      const page = parseInt( req.query.page );
+      const limit = parseInt( req.query.limit );
+
+      // Checking the validity of the page and limit
+      if ( isNaN( page ) || isNaN( limit ) || page <= 0 || limit <= 0 ) {
+        return res.status( 400 ).json( { message: 'Invalid page or limit value. Page and limit must be positive integers.' } );
+      }
+
       const sortField = req.query.sortField || '_id'; // field for sorting
       const sortOrder = req.query.sortOrder || 'asc'; // sorting order
 
@@ -68,13 +74,13 @@ export default function ( server, mongoose ) {
   // Skapar en GET-route för att hämta en specifik användare med ID
   server.get( '/api/users/:id', async ( req, res ) => {
     try {
-      const user = await User.findById( req.params.id ); // Hämtar en användare med ID från databasen.
+      const user = await User.findById( req.params.id ); // Hämtar en användare med ID från databasen
       if ( !user ) {
-        return res.status( 404 ).json( { message: "Användaren hittades inte." } );
+        return res.status( 404 ).json( { message: "User not found" } );
       }
       res.json( user );
     } catch ( error ) {
-      res.status( 500 ).json( { message: "Ett fel uppstod på servern vid hämtning av en användare." } );
+      res.status( 500 ).json( { message: "An error occurred while searching for user" } );
     }
   } );
 
@@ -89,7 +95,7 @@ export default function ( server, mongoose ) {
       }
       res.json( user );
     } catch ( error ) {
-      res.status( 500 ).json( { message: "Ett fel uppstod på servern vid hämtning av en användare.", error } );
+      res.status( 500 ).json( { message: "An error occurred while searching for user", error } );
     }
   } );
 
@@ -102,14 +108,15 @@ export default function ( server, mongoose ) {
       const users = await User.find( { username: { $regex: username, $options: "i" } } );
       if ( users.length === 0 ) {
         return res.status( 404 ).json( {
-          message: 'Användare med namn som innehåller ' + username + ' hittades inte' });
+          message: 'Users with names containing ' + username + ' not found' });
       }
       res.status( 200 ).json( users );
     } catch ( error ) {
       console.error( error );
-      res.status( 500 ).json( { message: "Ett fel inträffade vid sökning efter användare", error } );
+      res.status( 500 ).json( { message: "An error occurred while searching for users", error } );
     }
   } );
+
 
   // GET-route för sökning av en användare efter email
   server.get( "/api/users/email/:email", async ( req, res ) => {
@@ -117,12 +124,12 @@ export default function ( server, mongoose ) {
       const email = req.params.email;
       const user = await User.findOne( { email: email } );
       if ( !user ) {
-        return res.status( 404 ).json( { message: 'Användare med email ' + email + ' hittades inte' } );
+        return res.status( 404 ).json( { message: 'User with email ' + email + ' not found' } );
       }
       res.status( 200 ).json( user );
     } catch ( error ) {
       console.error( error );
-      res.status( 500 ).json( { message: "Ett fel inträffade vid sökning efter användare", error } );
+      res.status( 500 ).json( { message: "An error occurred while searching for users", error } );
     }
   } );
 
@@ -133,17 +140,17 @@ export default function ( server, mongoose ) {
       const date = req.params.date;
       // Kontrollerar att datumet i förfrågan är i rätt format
       if ( !isValidDate( date ) ) {
-        return res.status( 400 ).json( { message: "Ogiltigt datumformat. Använd formatet YYYY-MM-DD." } );
+        return res.status( 400 ).json( { message: "Invalid date format. Use YYYY-MM-DD format." } );
       }
       // Söker en användare vars konto skapandes datum motsvarar det angivna datumet
       const users = await User.find( { createdAt: { $gte: new Date( date ), $lt: new Date( date + 'T23:59:59.999Z' ) } } );
       if ( users.length === 0 ) {
         return res.status( 404 ).json( {
-          message: 'Användare med konto skapade ' + date + ' hittades inte' } );
+          message: 'User with account created ' + date + ' not found' } );
       }
       res.status( 200 ).json( users );
     } catch ( error ) {
-      res.status( 500 ).json( { message: "Ett fel inträffade vid hämtning av användare." } );
+      res.status( 500 ).json( { message: "An error occurred while retrieving users." } );
     }
   } );
 
@@ -152,6 +159,7 @@ export default function ( server, mongoose ) {
     const regex = /^\d{4}-\d{2}-\d{2}$/;
     return regex.test( dateString );
   }
+
 
   // GET-route för sökning av användare som har skapat ett konto under ett visst tidsperiod
   server.get( '/api/users/createdAt/:startDate/:endDate', async ( req, res ) => {
@@ -162,17 +170,17 @@ export default function ( server, mongoose ) {
 
       // Kontrollerar att datumen är korrekta
       if ( isNaN( startDate.getTime() ) || isNaN( endDate.getTime() ) ) {
-        return res.status( 400 ).json( { message: "Fel datumformat. Använd format 'YYYY-MM-DD'." } );
+        return res.status( 400 ).json( { message: "Invalid date format. Use YYYY-MM-DD format." } );
       }
 
       // Hämtar användare skapade inom ett givet tidsintervall
       const users = await User.find( { createdAt: { $gte: startDate, $lte: endDate } } );
       if ( users.length === 0 ) {
-        return res.status( 404 ).json( { message: 'Användare med konto skapade i angiven tidsperiod hittades inte' } );
+        return res.status( 404 ).json( { message: 'Users with account created in specified time period not found' } );
       }
       res.status( 200 ).json( users );
     } catch ( error ) {
-      res.status( 500 ).json( { message: "Ett fel uppstod på servern vid hämtning av användare efter skapandedatum.", error } );
+      res.status( 500 ).json( { message: "An error occurred on the server while retrieving users after the creation date.", error } );
     }
   } );
 
@@ -216,7 +224,6 @@ export default function ( server, mongoose ) {
       } );
 
       const savedUser = await newUser.save();
-
       res.status( 201 ).json( savedUser ); // Create user in JSON format
     } catch ( error ) {
       console.error( error );
@@ -224,6 +231,7 @@ export default function ( server, mongoose ) {
     }
   } );
 
+  
   // Skapar en PUT-route för att uppdatera en användare med ett specifikt ID.
   server.put( '/api/users/:id', async ( req, res ) => {
     try {

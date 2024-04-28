@@ -1,6 +1,8 @@
 # Fitness Tracker API :bicyclist:
  This project serves as a school assignment for the development and testing of the API, aimed at utilizing MongoDB, mongoose, server and fakerjs.
- 
+  → → → **VG** 🙋‍♀️💻 ← ← ←
+
+
  Additionally, the project focuses on API testing, featuring a Postman collection for testing purposes. You can access the Postman collection and documentation for API testing at the following links:
 
 - **API Testing Documentation** [API Manual Testing Documentation](https://github.com/YevShch/Fitness-Tracker/blob/main/DOCUMENTATION/API_Manual_Testing_Documentation.md) and [API Automated Testing Documentation](https://github.com/YevShch/Fitness-Tracker/blob/main/DOCUMENTATION/API_AUTO_Testing_Documentation.md)  

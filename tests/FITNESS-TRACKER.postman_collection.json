@@ -1,0 +1,3480 @@
+{
+	"info": {
+		"_postman_id": "94536aae-954b-41dd-a659-31841f79e949",
+		"name": "FITNESS-TRACKER",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33841208",
+		"_collection_link": "https://universal-trinity-236527-1.postman.co/workspace/Team-Workspace~f02dc3c9-cf61-4a68-859f-12f952372c2e/collection/33841208-94536aae-954b-41dd-a659-31841f79e949?action=share&source=collection_link&creator=33841208"
+	},
+	"item": [
+		{
+			"name": "Automated Tests",
+			"item": [
+				{
+					"name": "1A. HTTP Status Code Validation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Host}}/users",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2A. Data Format Validation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response data format is JSON\", function () {\r",
+									"    // Step 1: Check if the Content-Type header is present in the response\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"\r",
+									"    // Step 2: Get the value of the Content-Type header\r",
+									"    const contentType = pm.response.headers.get(\"Content-Type\");\r",
+									"\r",
+									"    // Step 3: Check if the Content-Type header indicates JSON format\r",
+									"    pm.expect(contentType).to.include(\"application/json\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Host}}/activities/661e330cbca6df6cdde0b7e5",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"activities",
+								"661e330cbca6df6cdde0b7e5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3A. Verify Correct HTTP Status Code for Invalid Requests",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 400 Bad Request and contains expected error message\", function () {\r",
+									"    // Check if the status code is 400 \r",
+									"    pm.response.to.have.status(400);\r",
+									"\r",
+									"    // Check if the response body contains the expected error message\r",
+									"    pm.expect(pm.response.json().message).to.eql(\"Invalid date format. Use YYYY-MM-DD format.\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users/createdAt/lalala",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"createdAt",
+								"lalala"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4A. Validate API Response with Specific Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  // Check if the response status code is 200 OK\r",
+									"       pm.test(\"Status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify API returns correct data with specific filters\", function () {\r",
+									"    // Parse the response body as JSON\r",
+									"    const responseBody = pm.response.json();\r",
+									"\r",
+									"    // Check if the response contains the expected keys\r",
+									"    pm.expect(responseBody).to.have.property(\"goals\");\r",
+									"    pm.expect(responseBody).to.have.property(\"currentPage\");\r",
+									"    pm.expect(responseBody).to.have.property(\"totalPages\");\r",
+									"    pm.expect(responseBody).to.have.property(\"totalGoals\");\r",
+									"\r",
+									"    // Check if currentPage in response matches the value of page in the request URL\r",
+									"    pm.expect(responseBody.currentPage).to.equal(6);\r",
+									"\r",
+									"    // Check if the goals array is not empty\r",
+									"    pm.expect(responseBody.goals.length).to.be.above(0);\r",
+									"\r",
+									"    // Check if totalPages is greater than 0\r",
+									"    pm.expect(responseBody.totalPages).to.be.above(0);\r",
+									"\r",
+									"    // Check if the data is sorted by createdAt field in descending order\r",
+									"    const goals = responseBody.goals;\r",
+									"    for (let i = 0; i < goals.length - 1; i++) {\r",
+									"        const currentCreatedAt = new Date(goals[i].createdAt);\r",
+									"        const nextCreatedAt = new Date(goals[i + 1].createdAt);\r",
+									"        pm.expect(currentCreatedAt).to.be.at.least(nextCreatedAt);\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/goals?page=6&sortField=createdAt&sortOrder=desc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"goals"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "6"
+								},
+								{
+									"key": "sortField",
+									"value": "createdAt"
+								},
+								{
+									"key": "sortOrder",
+									"value": "desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5A. Verify Paginated Results for Large Number of Records",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									" // Check if the response status code is 200 OK\r",
+									"       pm.test(\"Status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify API returns correct data with specific filters\", function () {\r",
+									"    // Parse the response body as JSON\r",
+									"    const responseBody = pm.response.json();\r",
+									" \r",
+									"    // Check if the response contains the expected keys\r",
+									"    pm.expect(responseBody).to.have.property(\"activities\");\r",
+									"    pm.expect(responseBody).to.have.property(\"currentPage\");\r",
+									"    pm.expect(responseBody).to.have.property(\"totalPages\");\r",
+									"    pm.expect(responseBody).to.have.property(\"totalActivities\");\r",
+									"\r",
+									"    // Check if the 'activities' array has a length of 10\r",
+									"    pm.expect(responseBody.activities.length).to.equal(10);\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/activities?page=2&limit=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"activities"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6A. Test Handling of Special Characters and Non-English Text",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test Handling of Special Characters and Non-English Text in POST request\", function () {\r",
+									"    // Check if the response status code is 201 Created\r",
+									"    pm.response.to.have.status(201);\r",
+									"\r",
+									"    // Parse the response body as JSON\r",
+									"    const responseBody = pm.response.json();\r",
+									"\r",
+									"    // Check if the response contains the input data\r",
+									"    pm.expect(responseBody).to.have.property(\"type\");\r",
+									"    pm.expect(responseBody.type).to.equal(\"åäöÅÄÖ\");\r",
+									"    pm.expect(responseBody).to.have.property(\"target\");\r",
+									"    pm.expect(responseBody.target).to.equal(\"!@#$%^&*()_+<com\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Delete the created goal by ID\", function () {\r",
+									"    // Parse the response body as JSON\r",
+									"    const responseBody = pm.response.json();\r",
+									"\r",
+									"    // Check if the response contains the goal ID\r",
+									"    pm.expect(responseBody).to.have.property(\"_id\");\r",
+									"\r",
+									"    // Get the user ID from the response\r",
+									"    const goalId = responseBody._id;\r",
+									"\r",
+									"    // Send DELETE request to the API to delete the user by ID\r",
+									"    pm.sendRequest({\r",
+									"        url: `http://localhost:3000/api/users/${goalId}`,\r",
+									"        method: 'DELETE'\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"661e330bbca6df6cdde0b7dc\",\r\n    \"type\": \"åäöÅÄÖ\",\r\n     \"target\": \"!@#$%^&*()_+<com\",\r\n     \"createdAt\": \"2023-07-04T00:16:07.218Z\"\r\n            }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/goals",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"goals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9A. Test for Step Count Record Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Update step count\", function () {\r",
+									"    // New value of the step count we want to set\r",
+									"    var newCount = 20000;\r",
+									"\r",
+									"    // Request to update the step count\r",
+									"    pm.sendRequest({\r",
+									"        url: 'http://localhost:3000/api/stepCounts/661e330dbca6df6cdde0b801',\r",
+									"        method: 'PUT',\r",
+									"        header: {\r",
+									"            'Content-Type': 'application/json'\r",
+									"        },\r",
+									"        body: {\r",
+									"            mode: 'raw',\r",
+									"            raw: JSON.stringify({\r",
+									"                \"count\": newCount\r",
+									"            })\r",
+									"        }\r",
+									"    }, function (err, response) {\r",
+									"        if (err) {\r",
+									"            console.error(err);\r",
+									"            return;\r",
+									"        }\r",
+									"        \r",
+									"        // Check the response status\r",
+									"        pm.response.to.have.status(200);\r",
+									"        // Check that the count value before update in the response is not equal the new value\r",
+									"        pm.expect(response.json().count).not.to.eql(newCount);\r",
+									"        \r",
+									"        // Request to get the updated step count\r",
+									"        pm.sendRequest({\r",
+									"            url: 'http://localhost:3000/api/stepCounts/661e330dbca6df6cdde0b801',\r",
+									"            method: 'GET'\r",
+									"        }, function (err, response) {\r",
+									"            if (err) {\r",
+									"                console.error(err);\r",
+									"                return;\r",
+									"            }\r",
+									"            // Check the response status\r",
+									"            pm.response.to.have.status(200);\r",
+									"\r",
+									"            // Check that the count value was successfully updated\r",
+									"            pm.expect(response.json().count).to.eql(newCount);\r",
+									"        });\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n     \"username\": \"User9Updated\"\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/stepCounts/661e330dbca6df6cdde0b801",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"stepCounts",
+								"661e330dbca6df6cdde0b801"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4A. Validate Response with Specific Filter",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Send a request with the specified filters\r",
+									"pm.sendRequest({\r",
+									"    url: 'http://localhost:3000/api/goals/user/661e34c1aa109d60e8257190/createdAt/2024-01-01/2024-05-01',\r",
+									"    method: 'GET',\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    }\r",
+									"}, function (err, res) {\r",
+									"    // Check if the request was successful and the status code is 200 OK\r",
+									"    pm.test(\"Status code is 200 OK\", function () {\r",
+									"        pm.expect(res).to.have.status(200);\r",
+									"    });\r",
+									"\r",
+									"    // Parse the response as JSON\r",
+									"    const responseBody = res.json();\r",
+									"\r",
+									"    // Check if the response contains an array of goals\r",
+									"    pm.test(\"Response contains an array of goals\", function () {\r",
+									"        pm.expect(responseBody).to.be.an('array');\r",
+									"        pm.expect(responseBody.length).to.be.above(0);\r",
+									"    });\r",
+									"\r",
+									"    // Check if each goal contains required properties\r",
+									"    pm.test(\"Each goal contains required properties\", function () {\r",
+									"        responseBody.forEach(function (goal) {\r",
+									"            pm.expect(goal).to.have.property('_id');\r",
+									"            pm.expect(goal).to.have.property('userId', '661e34c1aa109d60e8257190');\r",
+									"            pm.expect(goal).to.have.property('type');\r",
+									"            pm.expect(goal).to.have.property('target');\r",
+									"            pm.expect(goal).to.have.property('createdAt');\r",
+									"        });\r",
+									"    });\r",
+									"\r",
+									"    // Check if the createdAt of each goal is within the specified range\r",
+									"    pm.test(\"createdAt of each goal is within the specified range\", function () {\r",
+									"        responseBody.forEach(function (goal) {\r",
+									"            const createdAt = new Date(goal.createdAt);\r",
+									"            pm.expect(createdAt).to.be.within(new Date('2024-01-01'), new Date('2024-05-01'));\r",
+									"        });\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Host}}/goals/user/661e34c1aa109d60e8257190/createdAt/2024-01-01/2024-05-01 ",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"goals",
+								"user",
+								"661e34c1aa109d60e8257190",
+								"createdAt",
+								"2024-01-01",
+								"2024-05-01 "
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "11A. Database Disconnect Test",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Connect to the database and capture initial data\r",
+									"pm.sendRequest({\r",
+									"    url: \"http://localhost:3000/api/users/all?disconnect=false\",\r",
+									"    method: 'GET',\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    }\r",
+									"}, function (err, res) {\r",
+									"    pm.expect(err).to.be.null;\r",
+									"    pm.expect(res).to.have.property('code', 200);\r",
+									"\r",
+									"    // Capture the initial state of the database\r",
+									"    const initialData = res.json();\r",
+									"    const initialDataLength = initialData.length;\r",
+									"    const thirdInitialUser = initialData[2]; // Assuming the third object\r",
+									"\r",
+									"    pm.test(\"Verify database disconnection\", function () {\r",
+									"        // Disconnect from the database\r",
+									"        pm.sendRequest({\r",
+									"            url: \"http://localhost:3000/api/users/all?disconnect=true\",\r",
+									"            method: 'GET',\r",
+									"            header: {\r",
+									"                'Content-Type': 'application/json'\r",
+									"            }\r",
+									"        }, function (err, res) {\r",
+									"            pm.expect(err).to.be.null;\r",
+									"            pm.expect(res.json()).to.have.property('message', 'An error occurred on the server while fetching users');\r",
+									"        });\r",
+									"    });\r",
+									"\r",
+									"    pm.test(\"Verify database reconnection\", function () {\r",
+									"        // Reconnect to the database\r",
+									"        pm.sendRequest({\r",
+									"            url: \"http://localhost:3000/api/users/all?disconnect=false\",\r",
+									"            method: 'GET',\r",
+									"            header: {\r",
+									"                'Content-Type': 'application/json'\r",
+									"            }\r",
+									"        }, function (err, res) {\r",
+									"            pm.expect(err).to.be.null;\r",
+									"            pm.expect(res).to.have.property('code', 200);\r",
+									"        });\r",
+									"    });\r",
+									"\r",
+									"    pm.test(\"Compare database state before and after reconnection\", function () {\r",
+									"        // Compare the length of the data before and after reconnection\r",
+									"        const finalDataLength = res.json().length;\r",
+									"        pm.expect(finalDataLength).to.eql(initialDataLength);\r",
+									"\r",
+									"        // Compare specific properties of the third user object before and after reconnection\r",
+									"        const thirdFinalUser = res.json()[2]; // Assuming the third object\r",
+									"        pm.expect(thirdFinalUser._id).to.eql(thirdInitialUser._id);\r",
+									"        pm.expect(thirdFinalUser.username).to.eql(thirdInitialUser.username);\r",
+									"        pm.expect(thirdFinalUser.email).to.eql(thirdInitialUser.email);\r",
+									"        pm.expect(thirdFinalUser.createdAt).to.eql(thirdInitialUser.createdAt);\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "13A. Rate Limit test",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Rate limit test\r",
+									"pm.test(\"Rate limit test\", function () {\r",
+									"    for (let i = 0; i < 101; i++) { // Send 101 requests\r",
+									"        pm.sendRequest({\r",
+									"            url: 'http://localhost:3000/api/activities', \r",
+									"            method: 'GET',\r",
+									"           \r",
+									"        }, function (err, response) {\r",
+									"            if (err) {\r",
+									"                console.error('Error:', err);\r",
+									"                return;\r",
+									"            }\r",
+									"\r",
+									"            // Check that a status code 429 is returned when the limit is exceeded\r",
+									"            if (i < 100) {\r",
+									"                pm.response.to.have.status(200); // Expect a successful status for the first 100 requests\r",
+									"            } else {\r",
+									"                pm.response.to.have.status(429); // Expect status code 429 for the 101st request\r",
+									"                pm.expect(response.json().message).to.eql(\"Too many request from this IP, please try again in an 15 minutes.\"); // Check the error message\r",
+									"            }\r",
+									"        });\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/activities",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"activities"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Manual Tests",
+			"item": [
+				{
+					"name": "Concurrent Requests",
+					"item": [
+						{
+							"name": "Create a new activity",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"userId\": \"661e330cbca6df6cdde0b7df\",\r\n\"type\": \"Running\",\r\n\"startTime\": \"2024-04-30T23:35:49.864Z\",\r\n\"duration\": 1533,\r\n\"caloriesBurned\": 134,\r\n\"createdAt\": \"2024-04-16T04:35:20.316Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/activities",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"activities"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update the goal",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"type\": \"improve_endurance\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/goals/661e34c6aa109d60e8257258",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"goals",
+										"661e34c6aa109d60e8257258"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all goals",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/goals",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"goals"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "HTTP Methods Handling",
+					"item": [
+						{
+							"name": "Create a new user Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"Krila32\",\r\n    \"email\": \"musla32@yahoo.com\",\r\n    \"password\": \"wjflxmc75678I!!$\",\r\n    \"createdAt\": \"2024-04-23T16:31:35.000Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove a user Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/users/66266d34752ac0d499b0c065",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"users",
+										"66266d34752ac0d499b0c065"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all users Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/users",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update a user(username) Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"username\": \"Wyman75\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Host}}/users/661e34c0aa109d60e8257180",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"users",
+										"661e34c0aa109d60e8257180"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get all activities",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/activities/all",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"activities",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update an activity",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"type\": \"Boxing\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Host}}/activities/661e330cbca6df6cdde0b7e3",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"activities",
+										"661e330cbca6df6cdde0b7e3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a new activity",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"userId\": \"661e330bbca6df6cdde0b7dc\",\r\n\"type\": \"Hiking\",\r\n\"startTime\": \"2024-05-16T09:00:45.061Z\",\r\n\"duration\": 104,\r\n\"caloriesBurned\": 574,\r\n\"createdAt\": \"2024-04-24T03:58:42.652Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Host}}/activities",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"activities"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove activity",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/activities/6628c2d9febac78a4cf03e24",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"activities",
+										"6628c2d9febac78a4cf03e24"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all step counts",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/stepCounts",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"stepCounts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a new step count",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n \"userId\": \"661e330cbca6df6cdde0b7df\",\r\n\"date\": \"2024-04-20T10:36:34.951Z\",\r\n\"count\": 15030\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Host}}/stepCounts",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"stepCounts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update a step count",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"date\": \"2024-04-20T03:23:42.984Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Host}}/stepCounts/661e330dbca6df6cdde0b803",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"stepCounts",
+										"661e330dbca6df6cdde0b803"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove a step count",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/stepCounts/661e330dbca6df6cdde0b7ff",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"stepCounts",
+										"661e330dbca6df6cdde0b7ff"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all goals",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/goals/all",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"goals",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create a new goal for a specific user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"userId\": \"661e34c0aa109d60e8257184\",   \r\n\"type\": \"improve_balance\",\r\n\"target\": \"Improve yoga balance poses\",\r\n\"createdAt\": \"2023-07-05T00:16:07.218Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Host}}/goals",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"goals"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update a goal",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"target\": \"get_healthier\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Host}}/goals/661e34c6aa109d60e8257258",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"goals",
+										"661e34c6aa109d60e8257258"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remowe Goal",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/goals/661e330dbca6df6cdde0b7f7",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"goals",
+										"661e330dbca6df6cdde0b7f7"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Test API Handling of Record Updates",
+					"item": [
+						{
+							"name": "get the goal",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/goals/661e34c6aa109d60e8257250",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"goals",
+										"661e34c6aa109d60e8257250"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update the goal",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n \"type\": \"boost_energy\",\r\n\"target\": \"Incorporate more fruits and vegetables into diet\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/goals/661e34c6aa109d60e8257250",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"goals",
+										"661e34c6aa109d60e8257250"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get the updated goal",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/goals/661e34c6aa109d60e8257250",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"goals",
+										"661e34c6aa109d60e8257250"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Test API Performance",
+					"item": [
+						{
+							"name": "get a user by username",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/users/username/Natasha11",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users",
+										"username",
+										"Natasha11"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get users who created an account in a certain period of time",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/users/createdAt/2020-10-30/2024-05-01",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users",
+										"createdAt",
+										"2020-10-30",
+										"2024-05-01"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get a user by email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/users/email/Arely54@gmail.com",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"users",
+										"email",
+										"Arely54@gmail.com"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get paginated users",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/users?page=3&limit=6",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"users"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "3"
+										},
+										{
+											"key": "limit",
+											"value": "6"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get a user by part of username",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/users/searchByUsername/yz",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users",
+										"searchByUsername",
+										"yz"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Edge cases",
+					"item": [
+						{
+							"name": "Verification of Handling Missing Username Paramete",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"email\": \"fytrudk@gmail.com\",\r\n\"password\": \"ctb725RfgdRfLlNMD\",\r\n\"createdAt\": \"2024-03-20T20:18:36.823Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Verification of Handling Missing Email Parameter",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"username\": \"User234\",\r\n\"password\": \"ctb725RdRfLlNMD\",\r\n\"createdAt\": \"2024-03-20T20:18:36.823Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Verification of Handling Missing Password Parameter",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"username\": \"User234Upd\",\r\n\"email\": \"Aly54@gmail.com\",\r\n\"createdAt\": \"2024-03-20T20:18:36.823Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Verification of Handling Duplicate Email",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"username\": \"Anton25\",\r\n\"email\": \"Anais.Kuphal@yahoo.com\",\r\n\"password\": \"FawByftrfxTAlpIa_\",\r\n\"createdAt\": \"2023-08-05T16:15:03.382Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Verification Handling with invalid email format",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"username\": \"Anettette25\",\r\n\"email\": \"Anaisahoo\",\r\n\"password\": \"Faujt7xTAlpIa_\",\r\n\"createdAt\": \"2023-08-02T16:15:03.382Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Verify HTTP Status Code for GET Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Host}}/activities",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"activities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify API Response Data Format for JSON",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/stepCounts/661e330dbca6df6cdde0b7ff",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"stepCounts",
+								"661e330dbca6df6cdde0b7ff"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Correct HTTP Status Code for Invalid Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/stepCounts/invalid_id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"stepCounts",
+								"invalid_id"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test API with Specific Filters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Host}}/activities?userId=661e34c0aa109d60e825718c&minMinutes=20&maxMinutes=101",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"activities"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "661e34c0aa109d60e825718c"
+								},
+								{
+									"key": "minMinutes",
+									"value": "20"
+								},
+								{
+									"key": "maxMinutes",
+									"value": "101"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify API Pagination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Host}}/goals?page=2&limit=5",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"goals"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "limit",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Handling of Special Characters and Non-English Text",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n         \"type\": \"åäöÅÄÖ\",\r\n         \"target\": \"!@#$%^&*()_+<com\"\r\n     }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/goals/661e34c6aa109d60e8257260",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"goals",
+								"661e34c6aa109d60e8257260"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Disconnect",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/stepCounts/661e330dbca6df6cdde0b803",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"stepCounts",
+								"661e330dbca6df6cdde0b803"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API Rate Limiting Test",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users/username/Natasha11",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"username",
+								"Natasha11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API Rate Limiting Test",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users/661e34c1aa109d60e8257194",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"661e34c1aa109d60e8257194"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "All endpoints",
+			"item": [
+				{
+					"name": "Users. All Enpoints",
+					"item": [
+						{
+							"name": "Get all users",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/users",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update a user(username)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"UserNameUpdated!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Host}}/users/661e34c0aa109d60e8257170",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"users",
+										"661e34c0aa109d60e8257170"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove a user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/users/66266d34752ac0d499b0c065",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"users",
+										"66266d34752ac0d499b0c065"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a new user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"Krila32\",\r\n    \"email\": \"musla32@yahoo.com\",\r\n    \"password\": \"wjflxmc75678I!!$\",\r\n    \"createdAt\": \"2024-04-23T16:31:35.000Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get a user by part of username",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/users/partOfUsername/yz",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users",
+										"partOfUsername",
+										"yz"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get a user by Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/users/661e330cbca6df6cdde0b7df",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users",
+										"661e330cbca6df6cdde0b7df"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get a user by username",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/users/username/Natasha11",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users",
+										"username",
+										"Natasha11"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get users who created an account in a certain period of time",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/users/createdAt/2020-10-30/2024-05-01",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users",
+										"createdAt",
+										"2020-10-30",
+										"2024-05-01"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get user by account creation date",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/users/createdAt/2024-03-20",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users",
+										"createdAt",
+										"2024-03-20"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get a user by email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/users/email/Everardo_Hammes79@gmail.com",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"users",
+										"email",
+										"Everardo_Hammes79@gmail.com"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get paginated users",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/users?page=3&limit=6",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"users"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "3"
+										},
+										{
+											"key": "limit",
+											"value": "6"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get users with pagination and ascending order",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/users?page=2&limit=10&sortField=createdAt&sortOrder=asc",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"users"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "2"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "sortField",
+											"value": "createdAt"
+										},
+										{
+											"key": "sortOrder",
+											"value": "asc"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Activities. All endpoints",
+					"item": [
+						{
+							"name": "get all activities",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/activities/all",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"activities",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update an activity",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"type\": \"Boxing\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Host}}/activities/661e330cbca6df6cdde0b7e3",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"activities",
+										"661e330cbca6df6cdde0b7e3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a new activity",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"userId\": \"661e330bbca6df6cdde0b7dc\",\r\n\"type\": \"Hiking\",\r\n\"startTime\": \"2024-05-16T09:00:45.061Z\",\r\n\"duration\": 104,\r\n\"caloriesBurned\": 574,\r\n\"createdAt\": \"2024-04-24T03:58:42.652Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Host}}/activities",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"activities"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove activity",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/activities/6628c2d9febac78a4cf03e24",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"activities",
+										"6628c2d9febac78a4cf03e24"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get activities by user Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/activities?userId=661e330cbca6df6cdde0b7e1",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"activities"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "661e330cbca6df6cdde0b7e1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get activities by type",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/activities?type=dancing",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"activities"
+									],
+									"query": [
+										{
+											"key": "type",
+											"value": "dancing"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get activities for specific user by burned calories",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/activities?userId=661e330cbca6df6cdde0b7e1&minCalories=100&maxCalories=500",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"activities"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "661e330cbca6df6cdde0b7e1"
+										},
+										{
+											"key": "minCalories",
+											"value": "100"
+										},
+										{
+											"key": "maxCalories",
+											"value": "500"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get activities for specific user by date of creation",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/activities?userId=661e330cbca6df6cdde0b7df&startDate=2024-01-01&endDate=2024-05-01",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"activities"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "661e330cbca6df6cdde0b7df"
+										},
+										{
+											"key": "startDate",
+											"value": "2024-01-01"
+										},
+										{
+											"key": "endDate",
+											"value": "2024-05-01"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get activities for a user by the date of start",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/activities?userId=661e330cbca6df6cdde0b7e1&startTimeBefore=2024-04-26&startTimeAfter=2023-01-01",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"activities"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "661e330cbca6df6cdde0b7e1"
+										},
+										{
+											"key": "startTimeBefore",
+											"value": "2024-04-26"
+										},
+										{
+											"key": "startTimeAfter",
+											"value": "2023-01-01"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get activities for a user by duration",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/activities?userId=661e34c0aa109d60e825718c&minMinutes=20&maxMinutes=101",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"activities"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "661e34c0aa109d60e825718c"
+										},
+										{
+											"key": "minMinutes",
+											"value": "20"
+										},
+										{
+											"key": "maxMinutes",
+											"value": "101"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get activity by type for spesific user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response time is less than 200ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/activities?userId=661e330bbca6df6cdde0b7dc&byType=dancing",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"activities"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "661e330bbca6df6cdde0b7dc"
+										},
+										{
+											"key": "byType",
+											"value": "dancing"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get activities with pagination",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/activities?page=2&limit=10",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"activities"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "2"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Step Counts. All endpoints",
+					"item": [
+						{
+							"name": "Get all step counts",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/stepCounts",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"stepCounts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get a step count by ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/stepCounts/661e330dbca6df6cdde0b801",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"stepCounts",
+										"661e330dbca6df6cdde0b801"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get all step counts for one user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/stepCounts/user/661e330cbca6df6cdde0b7df",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"stepCounts",
+										"user",
+										"661e330cbca6df6cdde0b7df"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET step counts for user within date range",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/stepCounts/user/661e330cbca6df6cdde0b7df/2024-04-01/2024-04-30",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"stepCounts",
+										"user",
+										"661e330cbca6df6cdde0b7df",
+										"2024-04-01",
+										"2024-04-30"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a new step count",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n \"userId\": \"661e330cbca6df6cdde0b7df\",\r\n\"date\": \"2024-04-20T10:36:34.951Z\",\r\n\"count\": 15030\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Host}}/stepCounts",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"stepCounts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update a step count",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"date\": \"2024-04-20T03:23:42.984Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Host}}/stepCounts/661e330dbca6df6cdde0b803",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"stepCounts",
+										"661e330dbca6df6cdde0b803"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove a step count",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/stepCounts/661e330dbca6df6cdde0b7ff",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"stepCounts",
+										"661e330dbca6df6cdde0b7ff"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Goals. All Endpoints",
+					"item": [
+						{
+							"name": "Get all goals",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/goals/all",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"goals",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get a goal by ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/goals/661e34c6aa109d60e8257250",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"goals",
+										"661e34c6aa109d60e8257250"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Fetch Goals with Pagination",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/goals?page=2&limit=5",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"goals"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "2"
+										},
+										{
+											"key": "limit",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Fetch Paginated Goals with Sorting",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/goals?page=6&sortField=createdAt&sortOrder=asc",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"goals"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "6"
+										},
+										{
+											"key": "sortField",
+											"value": "createdAt"
+										},
+										{
+											"key": "sortOrder",
+											"value": "asc"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get list of goals for spesific user",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/goals/user/661e330cbca6df6cdde0b7e1",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"goals",
+										"user",
+										"661e330cbca6df6cdde0b7e1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get goals for spesific user by type",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/goals/user/661e34c1aa109d60e8257190/boost_energy",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"goals",
+										"user",
+										"661e34c1aa109d60e8257190",
+										"boost_energy"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get goals for a user by date of creation",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/goals/user/661e34c1aa109d60e825719a/createdAt/2023-12-01/2024-05-28",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"goals",
+										"user",
+										"661e34c1aa109d60e825719a",
+										"createdAt",
+										"2023-12-01",
+										"2024-05-28"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create a new goal for a specific user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"userId\": \"661e34c0aa109d60e8257184\",   \r\n\"type\": \"improve_balance\",\r\n\"target\": \"Improve yoga balance poses\",\r\n\"createdAt\": \"2023-07-05T00:16:07.218Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Host}}/goals",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"goals"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update a goal",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"target\": \"get_healthier\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Host}}/goals/661e34c6aa109d60e8257258",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"goals",
+										"661e34c6aa109d60e8257258"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remowe Goal",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{Host}}/goals/661e34c6aa109d60e8257252",
+									"host": [
+										"{{Host}}"
+									],
+									"path": [
+										"goals",
+										"661e34c6aa109d60e8257252"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"description": "This folder contains requests for testing each API endpoint and verifies the status codes to ensure they return the correct HTTP status codes."
+		}
+	]
+}

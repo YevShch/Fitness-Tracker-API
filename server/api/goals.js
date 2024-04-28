@@ -11,20 +11,21 @@ export default function ( server, mongoose ) {
       res.status( 200 ).json( goals );
     } catch ( error ) {
       console.error( error ); // Skriver ut felet till konsolen
-      res.status( 500 ).json( { message: "Ett fel inträffade", error } );
+      res.status( 500 ).json( { message: "An error occurred on the server", error } );
     }
   } ); 
+  
 
   // Skapar en GET-route för att hämta ett specifikt måll med ett specifikt ID
   server.get( '/api/goals/:id', async ( req, res ) => {
     try {
       const goal = await Goal.findById( req.params.id ); // Hämtar ett måll med ID från databasen.
       if ( !goal ) {
-        return res.status( 404 ).json( { message: "Mål hittades inte" } );
+        return res.status( 404 ).json( { message: "Goal not found" } );
       }
       res.json( goal );
     } catch ( error ) {
-      res.status( 500 ).json( { message: "Ett fel uppstod på servern vid hämtning av ett mål." } );
+      res.status( 500 ).json( { message: "An error occurred on the server" } );
     }
   } );
 
@@ -57,9 +58,10 @@ export default function ( server, mongoose ) {
       } );
     } catch ( error ) {
       console.error( error );
-      res.status( 500 ).json( { message: "Ett fel inträffade", error } );
+      res.status( 500 ).json( { message: "An error occurred on the server", error } );
     }
   } );
+
 
   // GET-route för att hämta en lista av måll för en specifik användare 
   server.get( "/api/goals/user/:userId", async ( req, res ) => {
@@ -71,7 +73,7 @@ export default function ( server, mongoose ) {
       res.status( 200 ).json( goals );
     } catch ( error ) {
       console.error( error ); // Skriver ut felet till konsolen
-      res.status( 500 ).json( { message: "Ett fel uppstod på servern vid hämtning av måll", error } );
+      res.status( 500 ).json( { message: "An error occurred on the server", error } );
     }
   } );
 
@@ -86,14 +88,15 @@ export default function ( server, mongoose ) {
       } );
       // Kontrollerar om goals har hittats
       if ( goals.length === 0 ) {
-        return res.status( 404 ).json( { message: "Måll hittades inte" } );
+        return res.status( 404 ).json( { message: "Goal not found" } );
       }
       res.status( 200 ).json( goals );
     } catch ( error ) {
       console.error( error ); // Skriver ut felet till konsolen
-      res.status( 500 ).json( { message: "Ett fel uppstod på servern vid hämtning av måll", error } );
+      res.status( 500 ).json( { message: "An error occurred on the server", error } );
     }
   } ); 
+
 
   // GET route for goals for specific user by date of creation
   server.get( '/api/goals/user/:userId/createdAt/:startDate/:endDate', async ( req, res ) => {
@@ -105,17 +108,17 @@ export default function ( server, mongoose ) {
 
       // Kontrollerar att datumen är korrekta
       if ( isNaN( startDate.getTime() ) || isNaN( endDate.getTime() ) ) {
-        return res.status( 400 ).json( { message: "Fel datumformat. Använd format 'YYYY-MM-DD'." } );
+        return res.status( 400 ).json( { message: "Invalid date format. Use YYYY-MM-DD format." } );
       }
 
       // Hämtar måll skapade inom ett givet tidsintervall
       const goals = await Goal.find( { userId: userId, createdAt: { $gte: startDate, $lte: endDate } } );
       if ( goals.length === 0 ) {
-        return res.status( 404 ).json( { message: 'Användare med konto skapade i angiven tidsperiod hittades inte' } );
+        return res.status( 404 ).json( { message: 'Goal not found' } );
       }
       res.status( 200 ).json( goals );
     } catch ( error ) {
-      res.status( 500 ).json( { message: "Ett fel uppstod på servern vid hämtning av måll efter skapandedatum.", error } );
+      res.status( 500 ).json( { message: "An error occurred on the server", error } );
     }
   } );
 
@@ -133,7 +136,7 @@ export default function ( server, mongoose ) {
       res.status( 201 ).json( savedGoal );
     } catch ( error ) {
       console.error( error );
-      res.status( 500 ).json( { message: "Ett fel uppstod på servern vid skapande av nytt mål.", error } );
+      res.status( 500 ).json( { message: "An error occurred on the server", error } );
     }
   } );
 
@@ -144,12 +147,12 @@ export default function ( server, mongoose ) {
       const updatedGoal = await Goal.findByIdAndUpdate( req.params.id, req.body );
 
       if ( !updatedGoal ) {
-        return res.status( 404 ).json( { message: 'Mål hittades inte' } );
+        return res.status( 404 ).json( { message: 'Goal not found' } );
       }
       res.json( updatedGoal );
     } catch ( error ) {
       console.error( error );
-      res.status( 500 ).json( { message: 'Ett fel uppstod på servern vid uppdatering av måll.' } );
+      res.status( 500 ).json( { message: 'An error occurred on the server' } );
     }
   } );
 
@@ -160,10 +163,10 @@ export default function ( server, mongoose ) {
       if ( !deletedGoal ) {
         return res.status( 404 ).json( { message: "Målet hittades inte" } );
       }
-      res.json( { message: "Goal deleted successfully." } ); // Bekräftelse på att boken har raderats.
+      res.json( { message: "Goal deleted successfully." } ); 
     } catch ( error ) {
       console.error( error );
-      res.status( 500 ).json( { message: "Ett fel uppstod på servern vid radering av måll." } );
+      res.status( 500 ).json( { message: "An error occurred on the server" } );
     }
   } );
 
